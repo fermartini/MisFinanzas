@@ -1,24 +1,39 @@
-import logo from './logo.svg';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Sesion from './components/page/Sesion';
+import { AuthProvider } from './context/authContext';
+import Home from './components/page/Home';
+import NavBar from './components/NavBar';
+import Resumen from './components/page/Resumen';
+import Add from './components/page/Add';
+import Graficos from './components/page/Graficos';
+import Perfil from './components/page/Perfil';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+
+
+      <BrowserRouter>
+        <main className='overflow-x-hidden'>
+          <div className="absolute top-0 z-[-2] max-h-fit w-full bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
+
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/resumen' element={<Resumen />} />
+              <Route path='/add' element={<Add />} />
+              <Route path='/resumen/grafico' element={<Graficos />} />
+              <Route path='/perfil' element={<Perfil />} />
+              <Route path='/login' element={<Sesion />} />
+            </Routes>
+            <NavBar />
+          </div>
+        </main>
+      </BrowserRouter>
+
+    </AuthProvider>
+
   );
 }
 
