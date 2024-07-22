@@ -14,6 +14,8 @@ import postIngresos from '../PostIngresos'
 import eliminarGastos from '../EliminarGastos'
 import eliminarIngresos from '../EliminarIngresos'
 import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Add() {
   const id = localStorage.getItem('usuarioId')
@@ -59,43 +61,33 @@ export default function Add() {
   const [gastosUsuario, setGastosUsuario] = useState([])
   const [ingresos, setIngresos] = useState([])
   const [tipoIngresos, setTipoIngresos] = useState([])
-  const [ingresosUsuario, setIgresosUsuario] = useState([])
+  const [ingresosUsuario, setIngresosUsuario] = useState([])
 
   useEffect(() => {
-    const getGastos = async () => {
-      const datos = await FetchGastos('http://localhost:5042/api/NombreGastos')
-      setGastos(datos)
+    const fetchData = async () => {
+      try {
+        const [gastosData, tipoGastosData, gastosUsuarioData, ingresosData, tipoIngresosData, ingresosUsuarioData] = await Promise.all([
+          FetchGastos('http://localhost:5042/api/NombreGastos'),
+          FetchGastos('http://localhost:5042/api/TipoGastos'),
+          FetchGastos('http://localhost:5042/api/gastos'),
+          FetchGastos('http://localhost:5042/api/NombreIngresos'),
+          FetchGastos('http://localhost:5042/api/TipoIngresos'),
+          FetchGastos('http://localhost:5042/api/ingresos'),
+        ]);
 
-    }
-    const getTipoGastos = async () => {
-      const datos = await FetchGastos('http://localhost:5042/api/TipoGastos')
-      setTipoGastos(datos)
-    }
-    const getGastosUsuario = async () => {
-      const datos = await FetchGastos('http://localhost:5042/api/gastos')
-      setGastosUsuario(datos)
-    }
-    const getIngresos = async () => {
-      const datos = await FetchGastos('http://localhost:5042/api/NombreIngresos')
-      setIngresos(datos)
-    }
-    const getTipoIngresos = async () => {
-      const datos = await FetchGastos('http://localhost:5042/api/TipoIngresos')
-      setTipoIngresos(datos)
-    }
-    const getGastosIngresos = async () => {
-      const datos = await FetchGastos('http://localhost:5042/api/ingresos')
-      setIgresosUsuario(datos)
-    }
+        setGastos(gastosData);
+        setTipoGastos(tipoGastosData);
+        setGastosUsuario(gastosUsuarioData);
+        setIngresos(ingresosData);
+        setTipoIngresos(tipoIngresosData);
+        setIngresosUsuario(ingresosUsuarioData);
+      } catch (error) {
+        console.error('Error al obtener datos:', error);
+      }
+    };
 
-    getGastos();
-    getTipoGastos();
-    getGastosUsuario();
-    getIngresos();
-    getTipoIngresos();
-    getGastosIngresos();
-
-  }, [])
+    fetchData();
+  }, []);
 
   const [toggleValue, setToggleValue] = useState(false);
 
@@ -124,18 +116,25 @@ export default function Add() {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita el comportamiento predeterminado del formulario (recarga de página)
     try {
-      if (toggleValue)
-        await postIngresos(formValues) // Enviar el nuevo gasto
-      else
-        await postGastos(formValues); // Enviar el nuevo gasto
+      if (toggleValue){
+        await postIngresos(formValues, notifyOk, notifyError) // Enviar el nuevo gasto
+      }
+      else{
+        await postGastos(formValues,notifyOk, notifyError); // Enviar el nuevo gasto
+      }
+      
       // Si postGastos no devuelve el gasto creado, realiza una nueva solicitud para obtener la lista actualizada de gastos
 
       const datosActualizados = toggleValue ? await FetchGastos('http://localhost:5042/api/ingresos') : await FetchGastos('http://localhost:5042/api/gastos');
+
+      
+      
       setGastosUsuario(!toggleValue ? datosActualizados : gastosUsuario); // Actualiza el estado con la lista actualizada
-      setIgresosUsuario(toggleValue ? datosActualizados : ingresosUsuario);
+      setIngresosUsuario(toggleValue ? datosActualizados : ingresosUsuario);
       setFormValues(initialFormValues); // Reinicia el formulario
     } catch (error) {
       console.error('Error al enviar el gasto:', error);
+      
     }
   }
 
@@ -196,7 +195,7 @@ export default function Add() {
       then(async (result) => {
         if (result.isConfirmed) {
           try {
-            await eliminarGastos(e);
+            await eliminarGastos(e, eliminarOk, eliminarError);
             const datosActualizados = await FetchGastos('http://localhost:5042/api/gastos');
             setGastosUsuario(datosActualizados);
           } catch (error) {
@@ -229,9 +228,9 @@ export default function Add() {
       then(async (result) => {
         if (result.isConfirmed) {
           try {
-            await eliminarIngresos(e);
+            await eliminarIngresos(e, eliminarOk, eliminarError);
             const datosActualizados = await FetchGastos('http://localhost:5042/api/ingresos');
-            setIgresosUsuario(datosActualizados);
+            setIngresosUsuario(datosActualizados);
           } catch (error) {
             console.error('Error al eliminar el gasto:', error);
           }
@@ -241,30 +240,55 @@ export default function Add() {
 
   };
 
+    const notifyOk = () => toast.success('Se agrego correctamente', {
+      position: "top-right",
+      autoClose: 500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+    const eliminarOk = () => toast.success('Se elimino correctamente', {
+      position: "top-right",
+      autoClose: 500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
 
-  console.log('====================================');
-  console.log(gastosConNombresFiltrado);
-  console.log('====================================');
+    const notifyError = () => toast.error('No se pudo agregar, intenta de nuevo', {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+    const eliminarError = () => toast.error('No se pudo eliminar, intenta de nuevo', {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   return (
     <div className='grid grid-cols-6 h-screen gap-10 mt-10 w-full justify-center overflow-x-hidden'>
       <div className='col-span-1'></div>
-      <div className='flex flex-col justify-end h-fit w-full col-span-1'>
 
-        <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Gastos</h2>
-        {
-          gastosConNombresFiltrado.slice(-5).reverse().map((e) => (
-            <GastosCards key={e.id} icono={e.icono} gasto={e.nombreGasto} precio={e.importe} eliminar={() => eliminarGasto(e.id)} />
-
-          ))
-        }
-
-
-
-      </div>
       <div className='col-span-2 flex justify-center'>
 
-        <form action="POST" onSubmit={handleSubmit} >
-        <Toggle checked={toggleValue} onChange={handleToggle} />
+        <form action="POST" onSubmit={handleSubmit} className='w-full' >
+
 
           {!toggleValue ? (
             <>
@@ -324,11 +348,37 @@ export default function Add() {
             </>
           )}
           <FormBoton />
-          
-        </form>
-        
-      </div>
+          <Toggle checked={toggleValue} onChange={handleToggle} />
+          <ToastContainer position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
 
+          />
+
+        </form>
+
+      </div>
+      <div className="flex flex-colum col-span-2 h-screen gap-10 w-full ">
+        <div className='flex flex-col justify-end h-fit w-full col-span-1 '>
+
+          <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Gastos</h2>
+          {
+            gastosConNombresFiltrado.slice(-5).reverse().map((e) => (
+              <GastosCards key={e.id} icono={e.icono} gasto={e.nombreGasto} precio={e.importe} eliminar={() => eliminarGasto(e.id)} />
+
+            ))
+          }
+
+
+
+        </div>
         <div className='flex flex-col h-fit w-full col-span-1'>
 
           <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Ingresos</h2>
@@ -338,6 +388,7 @@ export default function Add() {
 
             ))
           }
+        </div>
       </div>
       <div className='col-span-1'></div>
     </div>

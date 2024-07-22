@@ -1,4 +1,4 @@
-const eliminarIngresos = async(gasto)=>{
+const eliminarIngresos = async(gasto, ok = () => {}, fallo = () => {})=>{
     try {
         const response = await fetch(`http://localhost:5042/api/Ingresos/${gasto}`, {
             method: 'DELETE',
@@ -10,8 +10,10 @@ const eliminarIngresos = async(gasto)=>{
             const errorData = await response.json();
             throw new Error(errorData.message || 'Algo salió mal');
           }
+          ok()
         console.log('Gasto eliminado correctamente');
     } catch (error) {
+      fallo()
         console.log(error);
     }
 }

@@ -1,7 +1,5 @@
 
-  
-
-const postGastos = async(gasto)=>{
+const postGastos = async(gasto, ok = () => {}, fallo = () => {})=>{
     try {
         const response = await fetch('http://localhost:5042/api/Gastos', {
             method: 'POST',
@@ -15,9 +13,11 @@ const postGastos = async(gasto)=>{
             throw new Error(errorData.message || 'Algo salió mal');
           }
           const result = await response.json();
+          ok()
         console.log('Gasto guardado correctamente', result);
     } catch (error) {
         console.log(error);
+        fallo()
     }
 }
 

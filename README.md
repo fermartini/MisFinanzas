@@ -68,3 +68,17 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## Configuración
+
+Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
+
+```plaintext
+REACT_APP_API_KEY=your_api_key_here
+REACT_APP_AUTH_DOMAIN=your_auth_domain_here
+REACT_APP_PROJECT_ID=your_project_id_here
+REACT_APP_STORAGE_BUCKET=your_storage_bucket_here
+REACT_APP_MESSAGING_SENDER_ID=your_messaging_sender_id_here
+REACT_APP_APP_ID=your_app_id_here
+REACT_APP_MEASUREMENT_ID=your_measurement_id_here
