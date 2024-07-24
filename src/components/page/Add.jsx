@@ -16,9 +16,16 @@ import eliminarIngresos from '../EliminarIngresos'
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../../context/authContext';
+import Loading from './Loading'
 
 export default function Add() {
-  const id = localStorage.getItem('usuarioId')
+  const { user, loading, authLoading } = useAuth();
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [idUser, setIdUser] = useState()
+  
+
+
 
   const obtenerFechaActual = () => {
     const ahora = new Date();
@@ -27,7 +34,6 @@ export default function Add() {
     const anio = format(ahora, 'yyyy');
     return { dia, mes, anio };
   }
-
   const [formValues, setFormValues] = useState({
     importe: '',
     dia: obtenerFechaActual().dia,
@@ -36,12 +42,61 @@ export default function Add() {
     detalle: '',
     NombreGastoId: 1,
     TipoGastoId: 1,
-    UsuarioId: id,
+    UsuarioId: null, // Inicialmente null
     NombreIngresoId: 1,
     TipoIngresoId: 1
-  })
+  });
+  
+  useEffect(() => {
 
+    user ? setIdUser(user.id) : setIdUser(0)
 
+    const fetchData = async () => {
+
+      try {
+        const [gastosData, tipoGastosData, gastosUsuarioData, ingresosData, tipoIngresosData, ingresosUsuarioData] = await Promise.all([
+          FetchGastos('http://localhost:5042/api/NombreGastos'),
+          FetchGastos('http://localhost:5042/api/TipoGastos'),
+          FetchGastos('http://localhost:5042/api/gastos'),
+          FetchGastos('http://localhost:5042/api/NombreIngresos'),
+          FetchGastos('http://localhost:5042/api/TipoIngresos'),
+          FetchGastos('http://localhost:5042/api/ingresos'),
+
+        ]);
+
+        setGastos(gastosData);
+        setTipoGastos(tipoGastosData);
+        setGastosUsuario(gastosUsuarioData);
+        setIngresos(ingresosData);
+        setTipoIngresos(tipoIngresosData);
+        setIngresosUsuario(ingresosUsuarioData);
+
+        setDataLoaded(true);
+      } catch (error) {
+        console.error('Error al obtener datos:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchUserId = async () => {
+      if (user) {
+        try {
+          setIdUser(user.id); // Suponiendo que `user.id` es el ID real
+          setFormValues(prevFormValues => ({
+            ...prevFormValues,
+            UsuarioId: user.id // Actualiza el UsuarioId del formulario
+          }));
+        } catch (error) {
+          console.error('Error al obtener el ID del usuario:', error);
+        }
+      }
+    };
+
+    fetchUserId();
+  }, [user]);
+  
 
   const initialFormValues = {
     importe: '',
@@ -51,11 +106,12 @@ export default function Add() {
     detalle: '',
     NombreGastoId: 1,
     TipoGastoId: 1,
-    UsuarioId: id,
+    UsuarioId: idUser,
     NombreIngresoId: 1,
     TipoIngresoId: 1
   }
 
+  
   const [gastos, setGastos] = useState([]);
   const [tipoGastos, setTipoGastos] = useState([])
   const [gastosUsuario, setGastosUsuario] = useState([])
@@ -63,31 +119,7 @@ export default function Add() {
   const [tipoIngresos, setTipoIngresos] = useState([])
   const [ingresosUsuario, setIngresosUsuario] = useState([])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [gastosData, tipoGastosData, gastosUsuarioData, ingresosData, tipoIngresosData, ingresosUsuarioData] = await Promise.all([
-          FetchGastos('http://localhost:5042/api/NombreGastos'),
-          FetchGastos('http://localhost:5042/api/TipoGastos'),
-          FetchGastos('http://localhost:5042/api/gastos'),
-          FetchGastos('http://localhost:5042/api/NombreIngresos'),
-          FetchGastos('http://localhost:5042/api/TipoIngresos'),
-          FetchGastos('http://localhost:5042/api/ingresos'),
-        ]);
 
-        setGastos(gastosData);
-        setTipoGastos(tipoGastosData);
-        setGastosUsuario(gastosUsuarioData);
-        setIngresos(ingresosData);
-        setTipoIngresos(tipoIngresosData);
-        setIngresosUsuario(ingresosUsuarioData);
-      } catch (error) {
-        console.error('Error al obtener datos:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const [toggleValue, setToggleValue] = useState(false);
 
@@ -116,25 +148,28 @@ export default function Add() {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita el comportamiento predeterminado del formulario (recarga de página)
     try {
-      if (toggleValue){
+      console.log('====================================');
+      console.log(formValues);
+      console.log('====================================');
+      if (toggleValue) {
         await postIngresos(formValues, notifyOk, notifyError) // Enviar el nuevo gasto
       }
-      else{
-        await postGastos(formValues,notifyOk, notifyError); // Enviar el nuevo gasto
+      else {
+        await postGastos(formValues, notifyOk, notifyError); // Enviar el nuevo gasto
       }
-      
+
       // Si postGastos no devuelve el gasto creado, realiza una nueva solicitud para obtener la lista actualizada de gastos
 
       const datosActualizados = toggleValue ? await FetchGastos('http://localhost:5042/api/ingresos') : await FetchGastos('http://localhost:5042/api/gastos');
 
-      
-      
+
+
       setGastosUsuario(!toggleValue ? datosActualizados : gastosUsuario); // Actualiza el estado con la lista actualizada
       setIngresosUsuario(toggleValue ? datosActualizados : ingresosUsuario);
       setFormValues(initialFormValues); // Reinicia el formulario
     } catch (error) {
       console.error('Error al enviar el gasto:', error);
-      
+
     }
   }
 
@@ -154,7 +189,7 @@ export default function Add() {
     };
   });
 
-  const gastosConNombresFiltrado = gastosConNombres.filter(e => e.usuarioId == localStorage.getItem('usuarioId'))
+  const gastosConNombresFiltrado = gastosConNombres.filter(e => e.usuarioId == idUser)
 
 
   const ingresosUsuarioImporteDecimales = ingresosUsuario.map(ingresoUsuario => {
@@ -173,7 +208,7 @@ export default function Add() {
   });
 
 
-  const ingresosConNombresFiltrado = ingresosConNombre.filter(e => e.usuarioId == localStorage.getItem('usuarioId'))
+  const ingresosConNombresFiltrado = ingresosConNombre.filter(e => e.usuarioId == idUser)
 
   const eliminarGasto = async (e) => {
     Swal.fire(
@@ -240,47 +275,50 @@ export default function Add() {
 
   };
 
-    const notifyOk = () => toast.success('Se agrego correctamente', {
-      position: "top-right",
-      autoClose: 500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-    const eliminarOk = () => toast.success('Se elimino correctamente', {
-      position: "top-right",
-      autoClose: 500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+  const notifyOk = () => toast.success('Se agrego correctamente', {
+    position: "top-right",
+    autoClose: 500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
+  const eliminarOk = () => toast.success('Se elimino correctamente', {
+    position: "top-right",
+    autoClose: 500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
 
-    const notifyError = () => toast.error('No se pudo agregar, intenta de nuevo', {
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-    const eliminarError = () => toast.error('No se pudo eliminar, intenta de nuevo', {
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+  const notifyError = () => toast.error('No se pudo agregar, intenta de nuevo', {
+    position: "top-right",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
+  const eliminarError = () => toast.error('No se pudo eliminar, intenta de nuevo', {
+    position: "top-right",
+    autoClose: 1500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });
+  if (!dataLoaded) {
+    return <Loading />;
+  }
   return (
     <div className='grid grid-cols-6 h-screen gap-10 mt-10 w-full justify-center overflow-x-hidden'>
       <div className='col-span-1'></div>
