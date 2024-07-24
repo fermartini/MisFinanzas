@@ -15,7 +15,7 @@ export const useAuth = () => {
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
     const [authLoading, setAuthLoading] = useState(false);
     const [gastos, setGastos] = useState(null);
     const [ingresos, setIngresos] = useState(null);
@@ -62,7 +62,7 @@ export function AuthProvider({ children }) {
                         const tipoIngreso = await respTipoIngreso.json();
                         const nombreGasto = await respNombreGasto.json();
                         const nombreIngreso = await respNombreIngreso.json();
-                        
+
                         setTipoGastos(tipoGasto);
                         setTipoIngresos(tipoIngreso);
                         setNombreGastos(nombreGasto);
@@ -70,6 +70,8 @@ export function AuthProvider({ children }) {
                     } else {
                         console.error('Error al obtener datos del usuario:', response.statusText);
                         setUser(null);
+                        setGastos([])
+                        setIngresos([])
 
                     }
                 } catch (error) {
@@ -78,6 +80,8 @@ export function AuthProvider({ children }) {
                 }
             } else {
                 setUser(null);
+                setGastos([])
+                setIngresos([])
             }
             setLoading(false);
         });
@@ -88,16 +92,16 @@ export function AuthProvider({ children }) {
         setAuthLoading(true);
         try {
             const provider = new GoogleAuthProvider();
-            const result = await signInWithPopup(auth, provider);            
+            const result = await signInWithPopup(auth, provider);
             setUser(result.user);
             localStorage.setItem('photoUser', result.user.photoURL);
             return result.user;
         } catch (error) {
             console.error("Error al iniciar sesión con Google:", error);
         }
-     finally { // Desactiva el estado de carga
-        setAuthLoading(false);
-    }
+        finally { // Desactiva el estado de carga
+            setAuthLoading(false);
+        }
     };
 
 
@@ -111,7 +115,7 @@ export function AuthProvider({ children }) {
     };
 
     return (
-        <AuthContext.Provider value={{  loginWithGoogle, logout,user, setUser, loading , authLoading, gastos, setGastos, ingresos, setIngresos, tipoGastos, tipoIngresos, nombreGastos, nombreIngresos  }}>
+        <AuthContext.Provider value={{ loginWithGoogle, logout, user, setUser, loading, authLoading, gastos, setGastos, ingresos, setIngresos, tipoGastos, tipoIngresos, nombreGastos, nombreIngresos }}>
             {children}
         </AuthContext.Provider>
     );

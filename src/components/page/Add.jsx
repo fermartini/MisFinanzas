@@ -102,14 +102,20 @@ export default function Add() {
       console.log('====================================');
       console.log(formValues);
       console.log('====================================');
+      console.log('====================================');
+  console.log(gastos);
+  console.log('====================================');
       if (toggleValue) {
         await postIngresos(formValues, notifyOk, notifyError) // Enviar el nuevo gasto
       }
       else {
         await postGastos(formValues, notifyOk, notifyError); // Enviar el nuevo gasto
       }
+      console.log('====================================');
+      console.log(idUser);
+      console.log('====================================');
       // Si postGastos no devuelve el gasto creado, realiza una nueva solicitud para obtener la lista actualizada de gastos
-      const datosActualizados = toggleValue ? await FetchGastos('http://localhost:5042/api/ingresos') : await FetchGastos('http://localhost:5042/api/gastos');
+      const datosActualizados = toggleValue ? await FetchGastos(`http://localhost:5042/api/ingresos/usuario/${idUser}`) : await FetchGastos(`http://localhost:5042/api/gastos/usuario/${idUser}`);
       setGastos(!toggleValue ? datosActualizados : gastos); // Actualiza el estado con la lista actualizada
       setIngresos(toggleValue ? datosActualizados : ingresos);
       setFormValues(initialFormValues); // Reinicia el formulario

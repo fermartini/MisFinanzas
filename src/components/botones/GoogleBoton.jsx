@@ -58,9 +58,6 @@ export default function GoogleBoton() {
       setLoading(false); // Desactiva el estado de carga
     }
   };
-  if (loading || authLoading) {
-    return <Loading />;
-  }
   return (
         <button className='shadow-white ' onClick={loginGoogle}>
           <GoogleIcono />
