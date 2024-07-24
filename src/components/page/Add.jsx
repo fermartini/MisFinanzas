@@ -17,16 +17,10 @@ import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../../context/authContext';
-import Loading from './Loading'
 
 export default function Add() {
-  const { user, loading, authLoading } = useAuth();
-  const [dataLoaded, setDataLoaded] = useState(false);
+  const { user, gastos, ingresos, setGastos, setIngresos, tipoGastos, tipoIngresos, nombreGastos, nombreIngresos } = useAuth();
   const [idUser, setIdUser] = useState()
-  
-
-
-
   const obtenerFechaActual = () => {
     const ahora = new Date();
     const dia = format(ahora, 'dd');
@@ -46,38 +40,11 @@ export default function Add() {
     NombreIngresoId: 1,
     TipoIngresoId: 1
   });
-  
   useEffect(() => {
 
     user ? setIdUser(user.id) : setIdUser(0)
 
-    const fetchData = async () => {
 
-      try {
-        const [gastosData, tipoGastosData, gastosUsuarioData, ingresosData, tipoIngresosData, ingresosUsuarioData] = await Promise.all([
-          FetchGastos('http://localhost:5042/api/NombreGastos'),
-          FetchGastos('http://localhost:5042/api/TipoGastos'),
-          FetchGastos('http://localhost:5042/api/gastos'),
-          FetchGastos('http://localhost:5042/api/NombreIngresos'),
-          FetchGastos('http://localhost:5042/api/TipoIngresos'),
-          FetchGastos('http://localhost:5042/api/ingresos'),
-
-        ]);
-
-        setGastos(gastosData);
-        setTipoGastos(tipoGastosData);
-        setGastosUsuario(gastosUsuarioData);
-        setIngresos(ingresosData);
-        setTipoIngresos(tipoIngresosData);
-        setIngresosUsuario(ingresosUsuarioData);
-
-        setDataLoaded(true);
-      } catch (error) {
-        console.error('Error al obtener datos:', error);
-      }
-    };
-
-    fetchData();
   }, []);
   useEffect(() => {
     const fetchUserId = async () => {
@@ -96,8 +63,6 @@ export default function Add() {
 
     fetchUserId();
   }, [user]);
-  
-
   const initialFormValues = {
     importe: '',
     dia: obtenerFechaActual().dia,
@@ -110,20 +75,7 @@ export default function Add() {
     NombreIngresoId: 1,
     TipoIngresoId: 1
   }
-
-  
-  const [gastos, setGastos] = useState([]);
-  const [tipoGastos, setTipoGastos] = useState([])
-  const [gastosUsuario, setGastosUsuario] = useState([])
-  const [ingresos, setIngresos] = useState([])
-  const [tipoIngresos, setTipoIngresos] = useState([])
-  const [ingresosUsuario, setIngresosUsuario] = useState([])
-
-
-
   const [toggleValue, setToggleValue] = useState(false);
-
-
   const handleToggle = () => {
     setToggleValue(!toggleValue);
   };
@@ -136,7 +88,6 @@ export default function Add() {
     }
     )
   }
-
   const cambioTexto = (e) => {
     const { name, value } = e.target;
     setFormValues({
@@ -157,59 +108,19 @@ export default function Add() {
       else {
         await postGastos(formValues, notifyOk, notifyError); // Enviar el nuevo gasto
       }
-
       // Si postGastos no devuelve el gasto creado, realiza una nueva solicitud para obtener la lista actualizada de gastos
-
       const datosActualizados = toggleValue ? await FetchGastos('http://localhost:5042/api/ingresos') : await FetchGastos('http://localhost:5042/api/gastos');
-
-
-
-      setGastosUsuario(!toggleValue ? datosActualizados : gastosUsuario); // Actualiza el estado con la lista actualizada
-      setIngresosUsuario(toggleValue ? datosActualizados : ingresosUsuario);
+      setGastos(!toggleValue ? datosActualizados : gastos); // Actualiza el estado con la lista actualizada
+      setIngresos(toggleValue ? datosActualizados : ingresos);
       setFormValues(initialFormValues); // Reinicia el formulario
     } catch (error) {
       console.error('Error al enviar el gasto:', error);
 
     }
   }
-
-  const gastosUsuarioImporteDecimales = gastosUsuario.map(gastoUsuario => {
-    return {
-      ...gastoUsuario,
-      importe: gastoUsuario.importe.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    };
-  })
-
-  const gastosConNombres = gastosUsuarioImporteDecimales.map(gastoUsuario => {
-    const nombreGasto = gastos.find(gasto => gasto.id === gastoUsuario.nombreGastoId);
-    return {
-      ...gastoUsuario,
-      nombreGasto: nombreGasto ? nombreGasto.nombre : 'Desconocido',
-      icono: nombreGasto ? nombreGasto.icono : 'Desconocido',
-    };
-  });
-
-  const gastosConNombresFiltrado = gastosConNombres.filter(e => e.usuarioId == idUser)
-
-
-  const ingresosUsuarioImporteDecimales = ingresosUsuario.map(ingresoUsuario => {
-    return {
-      ...ingresoUsuario,
-      importe: ingresoUsuario.importe.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    };
-  })
-  const ingresosConNombre = ingresosUsuarioImporteDecimales.map(ingresoUsuario => {
-    const nombreIngresos = ingresos.find(ingreso => ingreso.id === ingresoUsuario.nombreIngresoId);
-    return {
-      ...ingresoUsuario,
-      nombreIngreso: nombreIngresos ? nombreIngresos.nombre : 'Desconocido',
-      icono: nombreIngresos ? nombreIngresos.icono : 'Desconocido'
-    };
-  });
-
-
-  const ingresosConNombresFiltrado = ingresosConNombre.filter(e => e.usuarioId == idUser)
-
+  const numerosConSeparacion = (importe) => {
+    return importe.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  }
   const eliminarGasto = async (e) => {
     Swal.fire(
       {
@@ -232,7 +143,7 @@ export default function Add() {
           try {
             await eliminarGastos(e, eliminarOk, eliminarError);
             const datosActualizados = await FetchGastos('http://localhost:5042/api/gastos');
-            setGastosUsuario(datosActualizados);
+            setGastos(datosActualizados);
           } catch (error) {
             console.error('Error al eliminar el gasto:', error);
           }
@@ -241,8 +152,6 @@ export default function Add() {
       )
 
   };
-
-
   const eliminarIngreso = async (e) => {
     Swal.fire(
       {
@@ -265,7 +174,7 @@ export default function Add() {
           try {
             await eliminarIngresos(e, eliminarOk, eliminarError);
             const datosActualizados = await FetchGastos('http://localhost:5042/api/ingresos');
-            setIngresosUsuario(datosActualizados);
+            setIngresos(datosActualizados);
           } catch (error) {
             console.error('Error al eliminar el gasto:', error);
           }
@@ -274,7 +183,6 @@ export default function Add() {
       )
 
   };
-
   const notifyOk = () => toast.success('Se agrego correctamente', {
     position: "top-right",
     autoClose: 500,
@@ -295,7 +203,6 @@ export default function Add() {
     progress: undefined,
     theme: "dark",
   });
-
   const notifyError = () => toast.error('No se pudo agregar, intenta de nuevo', {
     position: "top-right",
     autoClose: 1500,
@@ -316,18 +223,16 @@ export default function Add() {
     progress: undefined,
     theme: "dark",
   });
-  if (!dataLoaded) {
-    return <Loading />;
+
+  if(!user){
+    return (
+    <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>INICIA SESION</div>)
   }
   return (
     <div className='grid grid-cols-6 h-screen gap-10 mt-10 w-full justify-center overflow-x-hidden'>
       <div className='col-span-1'></div>
-
       <div className='col-span-2 flex justify-center'>
-
         <form action="POST" onSubmit={handleSubmit} className='w-full' >
-
-
           {!toggleValue ? (
             <>
               <h2 className='text-3xl text-center text-white pt-5'>AGREGAR GASTO</h2>
@@ -335,7 +240,7 @@ export default function Add() {
                 name='NombreGastoId'
                 value={formValues.NombreGastoId}
                 onChange={cambioTexto}
-                options={gastos.map(gasto => ({ value: gasto.id, label: gasto.nombre }))}
+                options={nombreGastos.map(nombreGasto => ({ value: nombreGasto.id, label: nombreGasto.nombre }))}
                 label='Gasto'
               />
               <Select
@@ -363,7 +268,7 @@ export default function Add() {
                 name='NombreIngresoId'
                 value={formValues.NombreIngresoId}
                 onChange={cambioTexto}
-                options={ingresos.map(ingreso => ({ value: ingreso.id, label: ingreso.nombre }))}
+                options={nombreIngresos.map(nombreIngreso => ({ value: nombreIngreso.id, label: nombreIngreso.nombre }))}
                 label='Ingreso'
               />
               <Select
@@ -406,25 +311,44 @@ export default function Add() {
       <div className="flex flex-colum col-span-2 h-screen gap-10 w-full ">
         <div className='flex flex-col justify-end h-fit w-full col-span-1 '>
 
-          <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Gastos</h2>
+          <h2 className='text-white text-3xl text-center text-nowrap'>Últimos Gastos</h2>
           {
-            gastosConNombresFiltrado.slice(-5).reverse().map((e) => (
-              <GastosCards key={e.id} icono={e.icono} gasto={e.nombreGasto} precio={e.importe} eliminar={() => eliminarGasto(e.id)} />
+            gastos.slice(-5).reverse().map((e) => {
+              const gastoEncontrado = nombreGastos.find(nombreIngreso => nombreIngreso.id === e.nombreGastoId);
+              const icono = gastoEncontrado ? gastoEncontrado.icono : 'https://i.ibb.co/921xY3T/477833.png';
+              const nombreGasto = gastoEncontrado ? gastoEncontrado.nombre : 'Sin nombre';
 
-            ))
+              return (
+                <GastosCards
+                  key={e.id}
+                  icono={icono}
+                  gasto={nombreGasto}
+                  precio={numerosConSeparacion(e.importe)}
+                  eliminar={() => eliminarGasto(e.id)}
+                />
+              );
+            })
           }
-
-
-
         </div>
         <div className='flex flex-col h-fit w-full col-span-1'>
 
           <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Ingresos</h2>
           {
-            ingresosConNombresFiltrado.slice(-5).reverse().map((e) => (
-              <GastosCards key={e.id} icono={e.icono} gasto={e.nombreIngreso} precio={e.importe} eliminar={() => eliminarIngreso(e.id)} />
+            ingresos.slice(-5).reverse().map((e) => {
+              const ingresoEncontrado = nombreIngresos.find(nombreIngreso => nombreIngreso.id === e.nombreIngresoId);
+              const icono = ingresoEncontrado ? ingresoEncontrado.icono : '';
+              const nombreIngre = ingresoEncontrado ? ingresoEncontrado.nombre : 'Sin nombre';
 
-            ))
+              return (
+                <GastosCards
+                  key={e.id}
+                  icono={icono}
+                  gasto={nombreIngre}
+                  precio={numerosConSeparacion(e.importe)}
+                  eliminar={() => eliminarIngreso(e.id)}
+                />
+              );
+            })
           }
         </div>
       </div>

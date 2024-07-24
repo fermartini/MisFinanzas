@@ -17,6 +17,12 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true); 
     const [authLoading, setAuthLoading] = useState(false);
+    const [gastos, setGastos] = useState(null);
+    const [ingresos, setIngresos] = useState(null);
+    const [tipoGastos, setTipoGastos] = useState(null);
+    const [tipoIngresos, setTipoIngresos] = useState(null);
+    const [nombreGastos, setNombreGastos] = useState(null);
+    const [nombreIngresos, setNombreIngresos] = useState(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -36,9 +42,35 @@ export function AuthProvider({ children }) {
                             id: firebaseUser.uid,
                         };
                         setUser(combinedUser);
+                        const respGastos = await fetch(`http://localhost:5042/api/Gastos/usuario/${firebaseUser.uid}`);
+                        const respIngresos = await fetch(`http://localhost:5042/api/Ingresos/usuario/${firebaseUser.uid}`);
+                        if (!respGastos.ok || !respIngresos.ok) {
+                            throw new Error('Network no respondio bien');
+                        }
+                        const gast = await respGastos.json();
+                        const ing = await respIngresos.json();
+                        setGastos(gast);
+                        setIngresos(ing);
+                        const respTipoGasto = await fetch(`http://localhost:5042/api/TipoGastos`);
+                        const respTipoIngreso = await fetch(`http://localhost:5042/api/TipoIngresos`);
+                        const respNombreGasto = await fetch(`http://localhost:5042/api/NombreGastos`);
+                        const respNombreIngreso = await fetch(`http://localhost:5042/api/NombreIngresos`);
+                        if (!respTipoGasto.ok || !respTipoIngreso.ok || !respNombreGasto.ok || !respNombreIngreso.ok) {
+                            throw new Error('Network no respondio bien');
+                        }
+                        const tipoGasto = await respTipoGasto.json();
+                        const tipoIngreso = await respTipoIngreso.json();
+                        const nombreGasto = await respNombreGasto.json();
+                        const nombreIngreso = await respNombreIngreso.json();
+                        
+                        setTipoGastos(tipoGasto);
+                        setTipoIngresos(tipoIngreso);
+                        setNombreGastos(nombreGasto);
+                        setNombreIngresos(nombreIngreso);
                     } else {
                         console.error('Error al obtener datos del usuario:', response.statusText);
                         setUser(null);
+
                     }
                 } catch (error) {
                     console.error('Error al obtener datos del usuario:', error);
@@ -79,7 +111,7 @@ export function AuthProvider({ children }) {
     };
 
     return (
-        <AuthContext.Provider value={{  loginWithGoogle, logout,user, setUser, loading , authLoading  }}>
+        <AuthContext.Provider value={{  loginWithGoogle, logout,user, setUser, loading , authLoading, gastos, setGastos, ingresos, setIngresos, tipoGastos, tipoIngresos, nombreGastos, nombreIngresos  }}>
             {children}
         </AuthContext.Provider>
     );
