@@ -3,6 +3,7 @@ import GoogleIcono from '../iconos/GoogleIcono';
 import { useAuth } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../page/Loading';
+import API_URL from '../../config.js'
 
 export default function GoogleBoton() {
   const { loginWithGoogle, user, setUser, authLoading } = useAuth();
@@ -25,7 +26,7 @@ export default function GoogleBoton() {
           id: users.uid
         };
 
-        const existingUserResponse = await fetch(`http://localhost:5042/api/Usuarios/mail/${userData.Mail}`);
+        const existingUserResponse = await fetch(`${API_URL}/api/Usuarios/mail/${userData.Mail}`);
         if (existingUserResponse.ok) {
           const existingUser = await existingUserResponse.json();
           console.log('Usuario existente:', existingUser);
@@ -33,7 +34,7 @@ export default function GoogleBoton() {
           setUser(existingUser);
           navigate('/'); // Redirige después de establecer el usuario
         } else {
-          const response = await fetch('http://localhost:5042/api/Usuarios', {
+          const response = await fetch(`${API_URL}/api/Usuarios`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

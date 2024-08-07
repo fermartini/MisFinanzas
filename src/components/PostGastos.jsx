@@ -1,7 +1,9 @@
 
+import API_URL from '../config.js';
+
 const postGastos = async(gasto, ok = () => {}, fallo = () => {})=>{
     try {
-        const response = await fetch('http://localhost:5042/api/Gastos', {
+        const response = await fetch(`${API_URL}/api/Gastos`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

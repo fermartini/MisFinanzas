@@ -1,6 +1,8 @@
+import API_URL from '../config.js';
+
 const eliminarIngresos = async(gasto, ok = () => {}, fallo = () => {})=>{
     try {
-        const response = await fetch(`http://localhost:5042/api/Ingresos/${gasto}`, {
+        const response = await fetch(`${API_URL}/api/Ingresos/${gasto}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
