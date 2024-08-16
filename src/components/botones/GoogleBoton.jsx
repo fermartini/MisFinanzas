@@ -7,7 +7,7 @@ import API_URL from '../../config.js'
 
 export default function GoogleBoton() {
   const { loginWithGoogle,  setUser } = useAuth();
-  const [setLoading] = useState(false); // Estado de carga para manejar la espera
+  const [loading,setLoading] = useState(false); // Estado de carga para manejar la espera
   const navigate = useNavigate();
 
   const loginGoogle = async (e) => {
