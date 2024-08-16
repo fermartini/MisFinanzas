@@ -2,6 +2,7 @@ import { auth } from "../firebase/firebase.config";
 import { createContext, useContext, useState, useEffect } from 'react';
 import { GoogleAuthProvider, signOut, signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { id } from "date-fns/locale";
+import API_URL from '../config.js'
 
 export const AuthContext = createContext();
 
@@ -29,7 +30,7 @@ export function AuthProvider({ children }) {
             if (firebaseUser) {
                 try {
                     // Aquí obtienes datos adicionales del usuario desde tu base de datos
-                    const response = await fetch(`http://192.168.0.29:5042/api/Usuarios/${firebaseUser.uid}`);
+                    const response = await fetch(`${API_URL}/api/Usuarios/${firebaseUser.uid}`);
                     if (response.ok) {
                         const additionalData = await response.json();
                         // Combina los datos de Firebase con los datos adicionales
@@ -42,8 +43,8 @@ export function AuthProvider({ children }) {
                             id: firebaseUser.uid,
                         };
                         setUser(combinedUser);
-                        const respGastos = await fetch(`http://192.168.0.29:5042/api/Gastos/usuario/${firebaseUser.uid}`);
-                        const respIngresos = await fetch(`http://192.168.0.29:5042/api/Ingresos/usuario/${firebaseUser.uid}`);
+                        const respGastos = await fetch(`${API_URL}/api/Gastos/usuario/${firebaseUser.uid}`);
+                        const respIngresos = await fetch(`${API_URL}/api/Ingresos/usuario/${firebaseUser.uid}`);
                         if (!respGastos.ok || !respIngresos.ok) {
                             throw new Error('Network no respondio bien');
                         }
@@ -51,10 +52,10 @@ export function AuthProvider({ children }) {
                         const ing = await respIngresos.json();
                         setGastos(gast);
                         setIngresos(ing);
-                        const respTipoGasto = await fetch(`http://192.168.0.29:5042/api/TipoGastos`);
-                        const respTipoIngreso = await fetch(`http://192.168.0.29:5042/api/TipoIngresos`);
-                        const respNombreGasto = await fetch(`http://192.168.0.29:5042/api/NombreGastos`);
-                        const respNombreIngreso = await fetch(`http://192.168.0.29:5042/api/NombreIngresos`);
+                        const respTipoGasto = await fetch(`${API_URL}/api/TipoGastos`);
+                        const respTipoIngreso = await fetch(`${API_URL}/api/TipoIngresos`);
+                        const respNombreGasto = await fetch(`${API_URL}/api/NombreGastos`);
+                        const respNombreIngreso = await fetch(`${API_URL}/api/NombreIngresos`);
                         if (!respTipoGasto.ok || !respTipoIngreso.ok || !respNombreGasto.ok || !respNombreIngreso.ok) {
                             throw new Error('Network no respondio bien');
                         }
