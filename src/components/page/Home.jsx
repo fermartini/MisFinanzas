@@ -29,14 +29,14 @@ export default function Home() {
 
 
   useEffect(() => {
-    if (gastos)
+    if (gastos && ingresos)
       setTotalGastos(gastos.reduce((acc, curr) => acc + (curr.mes === mesElegido ? curr.importe : 0), 0))
     
     if (ingresos)
       setTotalIngresos(ingresos.reduce((acc, curr) => acc + (curr.mes === mesElegido ? curr.importe : 0), 0))
     setTotalBalance(totalIngresos - totalGastos)
     
-  }, [gastos, ingresos, totalIngresos, totalGastos])
+  }, [gastos, ingresos, totalIngresos, totalGastos, mesElegido])
 
   if (!user) {
     return (
