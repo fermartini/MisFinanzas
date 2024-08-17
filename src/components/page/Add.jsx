@@ -241,9 +241,9 @@ export default function Add() {
       <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>INICIA SESION</div>)
   }
   return (
-    <div className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden'>
+    <div className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden '>
       <div className='lg:col-span-1'></div>
-      <div className='lg:col-span-2 flex flex-col items-center px-10 lg:p-0'>
+      <div className='lg:col-span-2 flex flex-col items-center px-10 mt-10 lg:p-0'>
         <Toggle checked={toggleValue} onChange={handleToggle} />
         <form action="POST" onSubmit={handleSubmit} className='w-full' >
           {!toggleValue ? (
@@ -308,7 +308,7 @@ export default function Add() {
 
 
       </div>
-      <div className="flex flex-col lg:flex-row col-span-2 h-screen gap-10 w-full px-10">
+      <div className="flex-col lg:flex-row col-span-2 h-screen gap-10 w-full px-10 hidden md:flex">
         <div className='flex flex-col justify-end h-fit w-full col-span-1 '>
 
           <h2 className='text-white text-3xl text-center text-nowrap'>Últimos Gastos</h2>
