@@ -43,11 +43,11 @@ export default function Home() {
       <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>INICIA SESION</div>)
   }
   return (
-    <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl px-5'>
+    <div className='h-screen  w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl px-5'>
 
 
 
-      <div class="grid mb-8 border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2 bg-white dark:bg-gray-800">
+      <div class="grid mb-8 w-full  border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:w-auto md:grid-cols-2 bg-white dark:bg-gray-800">
         <h2 className='md:col-span-2 text-center text-base m-3'> INFORME DEL {mesEnCurso} </h2>
 
         <figure class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 md:rounded-es-lg md:col-span-2 md:border-b-0  dark:bg-gray-800 dark:border-gray-700">
