@@ -289,7 +289,7 @@ export default function Add() {
                 />
                 <Fecha traerFecha={tomarDias} />
               </div>
-              <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='EJ: Cuenta del banco galicia....' />
+              <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='' disabled={true}/>
 
             </>
           )}

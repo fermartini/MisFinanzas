@@ -11,7 +11,7 @@ import FetchGastos from '../FetchGastos'
 import API_URL from '../../config.js';
 
 
-export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='' }) {
+export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', importe = 0, icono = '' }) {
     const { gastos, ingresos, setGastos, setIngresos, nombreGastos, nombreIngresos, loading, authloading, user } = useAuth();
     const eliminarIngreso = async (e) => {
         Swal.fire(
@@ -98,7 +98,7 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='' })
       };
 
     return (
-        <div class="w-full  p-4 bg-white border border-gray-200 rounded-lg text-sm shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 my-5 ">
+        <div className="w-full  p-4 bg-white border border-gray-200 rounded-lg text-sm shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 my-5 ">
             <ToastContainer position="top-right"
             autoClose={5000}
             hideProgressBar={false}
@@ -110,12 +110,14 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='' })
             pauseOnHover
             theme="dark"
           />
-            <div class="flex items-center justify-center mb-4 ">
-                <h5 class="text-xl font-bold text-center text-nowrap leading-none ">{loading || authloading? 'cargando...' : gastoNombre}</h5>
+            <div className="grid grid-cols-3 items-center justify-between mb-4 ">
+                <img src={icono} alt="" className='w-10' />
+                <h5 className="text-xl font-bold text-start text-nowrap leading-none ">{loading || authloading? 'cargando...' : gastoNombre}</h5>
+                <p className='text-2xl text-gray-500 text-end'>$ {numeroConSeparacion(importe)}</p>
             </div>
             
-           {gastos.map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
-           {ingresos.map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno detalle={ingreso.detalle? ingreso.detalle : 'sin detalle'} importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio}/>): null))}
+           {gastos.map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
+           {ingresos.map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno key={ingreso.id} detalle={ingreso.nombreIngreso } importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio}/>): null))}
         </div>
 
     )

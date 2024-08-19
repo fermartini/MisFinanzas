@@ -12,7 +12,10 @@ export default function sesion() {
       Inicia Sesion / Registrate con:
     </span>
     </div>
-      <GoogleBoton/>
+    <div className='bg-blue-950  rounded-xl justify-center items-center flex p-1 shadow-sm shadow-white hover:bg-blue-900 dark:active:bg-blue-950 dark:active:translate-y-1 dark:transition-all dark:duration-75'>
+    <GoogleBoton/>
+    </div>
+      
       
     </form>
   )
