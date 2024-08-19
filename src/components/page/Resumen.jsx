@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/authContext';
-import numeroConSeparacion from '../funciones.jsx'
 import Loading from './Loading';
 import ListaGastos from '../cards/ListaGastos.jsx';
 
@@ -47,14 +46,14 @@ export default function Resumen() {
 
 
     return (
-        <div className='min-h-screen w-screen flex flex-col items-center text-yellow-100 text-5xl my-20'>
+        <div className='min-h-screen max-w-screen flex flex-col items-center text-yellow-100 text-5xl my-10 mx-10'>
             <div>
-                <h2 className='text-gray-300' >RESUMEN</h2>
+                <h2 className='text-gray-300 text-center' >RESUMEN</h2>
             </div>
 
-            <div className='flex flex-col xl:flex-row gap-10'>
+            <div className='flex flex-col  gap-10 my-10'>
                 <div>
-                    <h2 className='text-3xl text-center '>Gastos</h2>
+                    <h2 className='text-3xl text-center text-red-500 '>Gastos</h2>
                     {loading || authloading ? <Loading /> : (gastosConNombre.map((gasto) => (
                         <ListaGastos gastoId={gasto.id} gastoNombre={loading ? 'cargando...' : gasto.nombreGasto} />
                     ))
@@ -62,7 +61,7 @@ export default function Resumen() {
                 </div>
 
                 <div>
-                    <h2 className='text-3xl text-center '>Ingresos</h2>
+                    <h2 className='text-3xl text-center text-green-600 '>Ingresos</h2>
                     {loading || authloading ? <Loading /> : (ingresosConNombre.map((ingreso) => (
                         <ListaGastos ingresoId={ingreso.id} gastoNombre={loading ? 'cargando...' : ingreso.nombreIngreso} />
                     ))

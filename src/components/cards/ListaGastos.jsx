@@ -98,7 +98,7 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='' })
       };
 
     return (
-        <div class="w-full  p-4 bg-white border border-gray-200 rounded-lg text-sm shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 my-5">
+        <div class="w-full  p-4 bg-white border border-gray-200 rounded-lg text-sm shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 my-5 ">
             <ToastContainer position="top-right"
             autoClose={5000}
             hideProgressBar={false}
@@ -110,12 +110,12 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='' })
             pauseOnHover
             theme="dark"
           />
-            <div class="flex items-center justify-center mb-4">
-                <h5 class="text-xl font-bold text-center text-nowrap leading-none text-gray-900 dark:text-white">{loading || authloading? 'cargando...' : gastoNombre}</h5>
+            <div class="flex items-center justify-center mb-4 ">
+                <h5 class="text-xl font-bold text-center text-nowrap leading-none ">{loading || authloading? 'cargando...' : gastoNombre}</h5>
             </div>
             
-           {gastos.map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} />): null))}
-           {ingresos.map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno detalle={ingreso.detalle? ingreso.detalle : 'sin detalle'} importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)}/>): null))}
+           {gastos.map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
+           {ingresos.map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno detalle={ingreso.detalle? ingreso.detalle : 'sin detalle'} importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio}/>): null))}
         </div>
 
     )
