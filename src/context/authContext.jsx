@@ -1,7 +1,6 @@
 import { auth } from "../firebase/firebase.config";
 import { createContext, useContext, useState, useEffect } from 'react';
 import { GoogleAuthProvider, signOut, signInWithPopup, onAuthStateChanged } from "firebase/auth";
-import { id } from "date-fns/locale";
 import API_URL from '../config.js'
 
 export const AuthContext = createContext();
@@ -20,8 +19,6 @@ export function AuthProvider({ children }) {
     const [authLoading, setAuthLoading] = useState(false);
     const [gastos, setGastos] = useState(null);
     const [ingresos, setIngresos] = useState(null);
-    const [tipoGastos, setTipoGastos] = useState(null);
-    const [tipoIngresos, setTipoIngresos] = useState(null);
     const [nombreGastos, setNombreGastos] = useState(null);
     const [nombreIngresos, setNombreIngresos] = useState(null);
 
@@ -50,22 +47,36 @@ export function AuthProvider({ children }) {
                         }
                         const gast = await respGastos.json();
                         const ing = await respIngresos.json();
-                        setGastos(gast);
-                        setIngresos(ing);
-                        const respTipoGasto = await fetch(`${API_URL}/api/TipoGastos`);
-                        const respTipoIngreso = await fetch(`${API_URL}/api/TipoIngresos`);
                         const respNombreGasto = await fetch(`${API_URL}/api/NombreGastos`);
                         const respNombreIngreso = await fetch(`${API_URL}/api/NombreIngresos`);
-                        if (!respTipoGasto.ok || !respTipoIngreso.ok || !respNombreGasto.ok || !respNombreIngreso.ok) {
+                        if (!respNombreGasto.ok || !respNombreIngreso.ok) {
                             throw new Error('Network no respondio bien');
                         }
-                        const tipoGasto = await respTipoGasto.json();
-                        const tipoIngreso = await respTipoIngreso.json();
                         const nombreGasto = await respNombreGasto.json();
                         const nombreIngreso = await respNombreIngreso.json();
 
-                        setTipoGastos(tipoGasto);
-                        setTipoIngresos(tipoIngreso);
+                        const gastosConNombres = gast.map(gasto => {
+                            const nombreGastoEncontrado = nombreGasto.find(n => n.id === gasto.nombreGastoId);
+                            return {
+                                ...gasto,
+                                nombreGasto: nombreGastoEncontrado ? nombreGastoEncontrado.nombre : 'Nombre no encontrado',
+                                icono: nombreGastoEncontrado ? nombreGastoEncontrado.icono : './icono/flecha-gastos.png',
+                            };
+                        });
+
+                        const ingresosConNombres = ing.map(ing => {
+                            const nombreIngresoEncontrado = nombreIngreso.find(n => n.id === ing.nombreIngresoId);
+                            return {
+                                ...ing,
+                                nombreIngreso: nombreIngresoEncontrado ? nombreIngresoEncontrado.nombre : 'Nombre no encontrado',
+                                icono: nombreIngresoEncontrado ? nombreIngresoEncontrado.icono : './icono/flecha-ingresos.png',
+                            };
+                        });
+                        
+                        
+
+                        setGastos(gastosConNombres);
+                        setIngresos(ingresosConNombres);
                         setNombreGastos(nombreGasto);
                         setNombreIngresos(nombreIngreso);
                     } else {
@@ -86,7 +97,6 @@ export function AuthProvider({ children }) {
             }
             setLoading(false);
         });
-
         return unsubscribe;
     }, []);
     const loginWithGoogle = async () => {
@@ -114,9 +124,10 @@ export function AuthProvider({ children }) {
             console.error("Error al cerrar sesión:", error);
         }
     };
+   
 
     return (
-        <AuthContext.Provider value={{ loginWithGoogle, logout, user, setUser, loading, authLoading, gastos, setGastos, ingresos, setIngresos, tipoGastos, tipoIngresos, nombreGastos, nombreIngresos }}>
+        <AuthContext.Provider value={{ loginWithGoogle, logout, user, setUser, loading, authLoading, gastos, setGastos, ingresos, setIngresos,  nombreGastos, nombreIngresos }}>
             {children}
         </AuthContext.Provider>
     );

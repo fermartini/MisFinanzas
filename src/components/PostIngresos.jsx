@@ -17,7 +17,7 @@ const postIngresos = async(gasto, ok = () => {}, fallo = () => {})=>{
           const result = await response.json();
         ok()
         console.log('Gasto guardado correctamente', result);
-        
+        return result
     } catch (error) {
       fallo()
         console.log(error);

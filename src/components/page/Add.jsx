@@ -20,10 +20,12 @@ import { useAuth } from '../../context/authContext';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './add.css'; // Importa tus estilos CSS para las animaciones
 import API_URL from '../../config.js';
-
+import Loading from './Loading.jsx'
+import {eliminarOk, notifyOk, notifyError, eliminarError, numeroConSeparacion} from '../funciones.jsx'
 export default function Add() {
-  const { user, gastos, ingresos, setGastos, setIngresos, tipoGastos, tipoIngresos, nombreGastos, nombreIngresos } = useAuth();
+  const { user, gastos, ingresos, setGastos, setIngresos, nombreGastos, nombreIngresos, loading, authloading } = useAuth();
   const [idUser, setIdUser] = useState()
+
   const obtenerFechaActual = () => {
     const ahora = new Date();
     const dia = format(ahora, 'dd');
@@ -32,7 +34,7 @@ export default function Add() {
     return { dia, mes, anio };
   }
 
-  
+
   const [formValues, setFormValues] = useState({
     importe: '',
     dia: obtenerFechaActual().dia,
@@ -46,17 +48,7 @@ export default function Add() {
     TipoIngresoId: 1
   });
   useEffect(() => {
-    gastos.map((e) => {
-      const ingresoEncontrado = nombreGastos.find(nombreGastos => nombreGastos.id === e.nombreGastoId);
-      const icono = ingresoEncontrado.icono !== '' ? ingresoEncontrado.icono : '../../public/img/gastos.png';
-      const nombreIngre = ingresoEncontrado ? ingresoEncontrado.nombre : 'Sin nombre';
-  
-      console.log(icono);
-      console.log(icono.length);
-      console.log(typeof icono);
-    })
     user ? setIdUser(user.id) : setIdUser(0)
-
 
   }, []);
   useEffect(() => {
@@ -113,24 +105,56 @@ export default function Add() {
     e.preventDefault(); // Evita el comportamiento predeterminado del formulario (recarga de página)
     try {
       if (toggleValue) {
-        await postIngresos(formValues, notifyOk, notifyError) // Enviar el nuevo gasto
+        // Enviar nuevo ingreso
+        const nuevoIngreso = await postIngresos(formValues, notifyOk, notifyError);
+
+        if (nuevoIngreso && nuevoIngreso.nombreIngresoId) {
+          // Buscar nombre y icono del ingreso en base al id
+          const nombreIngresoEncontrado = nombreIngresos.find(n => n.id === nuevoIngreso.nombreIngresoId);
+
+          // Agregar nombre e icono al nuevo ingreso
+          const ingresoConNombreYIcono = {
+            ...nuevoIngreso,
+            nombreIngreso: nombreIngresoEncontrado ? nombreIngresoEncontrado.nombre : 'Nombre no encontrado',
+            icono: nombreIngresoEncontrado ? nombreIngresoEncontrado.icono : '',
+          };
+
+          // Actualizar el estado de ingresos
+          setIngresos((prevIngresos) => [...prevIngresos, ingresoConNombreYIcono]);
+        } else {
+          console.error('Error: El nuevo ingreso no contiene el campo nombreIngresoId.');
+        }
+      } else {
+        // Enviar nuevo gasto
+        const nuevoGasto = await postGastos(formValues, notifyOk, notifyError);
+        if (nuevoGasto && nuevoGasto.nombreGastoId) {
+          // Buscar nombre y icono del gasto en base al id
+          const nombreGastoEncontrado = nombreGastos.find(n => n.id === nuevoGasto.nombreGastoId);
+
+          // Agregar nombre e icono al nuevo gasto
+          const gastoConNombreYIcono = {
+            ...nuevoGasto,
+            nombreGasto: nombreGastoEncontrado ? nombreGastoEncontrado.nombre : 'Nombre no encontrado',
+            icono: nombreGastoEncontrado ? nombreGastoEncontrado.icono : '',
+          };
+          console.log('====================================');
+          console.log(gastoConNombreYIcono);
+          console.log('====================================');
+          // Actualizar el estado de gastos
+          setGastos((prevGastos) => [...prevGastos, gastoConNombreYIcono]);
+        } else {
+          console.error('Error: El nuevo gasto no contiene el campo nombreGastoId.');
+        }
       }
-      else {
-        await postGastos(formValues, notifyOk, notifyError); // Enviar el nuevo gasto
-      }
-      // Si postGastos no devuelve el gasto creado, realiza una nueva solicitud para obtener la lista actualizada de gastos
-      const datosActualizados = toggleValue ? await FetchGastos(`${API_URL}/api/ingresos/usuario/${idUser}`) : await FetchGastos(`${API_URL}/api/gastos/usuario/${idUser}`);
-      setGastos(!toggleValue ? datosActualizados : gastos); // Actualiza el estado con la lista actualizada
-      setIngresos(toggleValue ? datosActualizados : ingresos);
-      setFormValues(initialFormValues); // Reinicia el formulario
+
+      // Reinicia el formulario
+      setFormValues(initialFormValues);
     } catch (error) {
       console.error('Error al enviar el gasto:', error);
-
     }
-  }
-  const numerosConSeparacion = (importe) => {
-    return importe.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-  }
+  };
+
+
   const eliminarGasto = async (e) => {
     Swal.fire(
       {
@@ -153,7 +177,18 @@ export default function Add() {
           try {
             await eliminarGastos(e, eliminarOk, eliminarError);
             const datosActualizados = await FetchGastos(`${API_URL}/api/gastos/usuario/${idUser}`);
-            setGastos(datosActualizados);
+            // Añade los nombres e iconos de los gastos actualizados
+            const gastosConNombreYIcono = datosActualizados.map((gasto) => {
+              const nombreGastoEncontrado = nombreGastos.find(n => n.id === gasto.nombreGastoId);
+              return {
+                ...gasto,
+                nombreGasto: nombreGastoEncontrado ? nombreGastoEncontrado.nombre : 'Nombre no encontrado',
+                icono: nombreGastoEncontrado ? nombreGastoEncontrado.icono : '',
+              };
+            });
+
+            // Actualiza el estado con los datos actualizados
+            setGastos(gastosConNombreYIcono);
           } catch (error) {
             console.error('Error al eliminar el gasto:', error);
           }
@@ -184,7 +219,17 @@ export default function Add() {
           try {
             await eliminarIngresos(e, eliminarOk, eliminarError);
             const datosActualizados = await FetchGastos(`${API_URL}/api/ingresos/usuario/${idUser}`);
-            setIngresos(datosActualizados);
+            const ingresosConNombreYIcono = datosActualizados.map((ingreso) => {
+              const nombreIngresoEncontrado = nombreIngresos.find(n => n.id === ingreso.nombreIngresoId);
+              return {
+                ...ingreso,
+                nombreIngreso: nombreIngresoEncontrado ? nombreIngresoEncontrado.nombre : 'Nombre no encontrado',
+                icono: nombreIngresoEncontrado ? nombreIngresoEncontrado.icono : '',
+              };
+            });
+
+            // Actualiza el estado con los datos actualizados
+            setIngresos(ingresosConNombreYIcono);
           } catch (error) {
             console.error('Error al eliminar el gasto:', error);
           }
@@ -193,49 +238,7 @@ export default function Add() {
       )
 
   };
-  const notifyOk = () => toast.success('Se agrego correctamente', {
-    position: "top-right",
-    autoClose: 500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
-  });
-  const eliminarOk = () => toast.success('Se elimino correctamente', {
-    position: "top-right",
-    autoClose: 500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
-  });
-  const notifyError = () => toast.error('No se pudo agregar, intenta de nuevo', {
-    position: "top-right",
-    autoClose: 1500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
-  });
-  const eliminarError = () => toast.error('No se pudo eliminar, intenta de nuevo', {
-    position: "top-right",
-    autoClose: 1500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
-  });
 
-
-  
   if (!user) {
     return (
       <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>INICIA SESION</div>)
@@ -249,11 +252,12 @@ export default function Add() {
           {!toggleValue ? (
             <>
               <h2 className='text-3xl text-center text-white pt-5'>AGREGAR GASTO</h2>
+
               <Select
                 name='NombreGastoId'
                 value={formValues.NombreGastoId}
                 onChange={cambioTexto}
-                options={nombreGastos.map(nombreGasto => ({ value: nombreGasto.id, label: nombreGasto.nombre }))}
+                options={loading || authloading ? [{ value: 'cargando...', label: 'cargando...' }] : nombreGastos.map(nombreGasto => ({ value: nombreGasto.id, label: nombreGasto.nombre }))}
                 label='Gasto'
               />
               <div className='flex justify-between gap-5'>
@@ -312,52 +316,64 @@ export default function Add() {
         <div className='flex flex-col justify-end h-fit w-full col-span-1 '>
 
           <h2 className='text-white text-3xl text-center text-nowrap'>Últimos Gastos</h2>
-          <TransitionGroup>
-            {
-              gastos.slice(-5).reverse().map((e) => {
-                const gastoEncontrado = nombreGastos.find(nombreIngreso => nombreIngreso.id === e.nombreGastoId);
-                const icono = gastoEncontrado.icono !== '' ? gastoEncontrado.icono : '/icono/flecha-gastos.png';
-                const nombreGasto = gastoEncontrado.nombre !== '' ? gastoEncontrado.nombre : 'Sin nombre';
 
-                return (
-                  <CSSTransition key={e.id} timeout={500} classNames='fade'>
-                    <GastosCards
-                      key={e.id}
-                      icono={icono}
-                      gasto={nombreGasto}
-                      precio={numerosConSeparacion(e.importe)}
-                      eliminar={() => eliminarGasto(e.id)}
-                    />
-                  </CSSTransition>
-                );
-              })
-            }
-          </TransitionGroup>
+          {
+            loading || authloading ? (
+              <Loading />) :
+              (
+                <TransitionGroup>
+                  {
+                    gastos.slice(-5).reverse().map((e) => {
+
+                      return (
+
+                        <CSSTransition
+                          key={e.id}
+                          timeout={500}
+                          classNames='fade'>
+                          <GastosCards
+                            key={e.id}
+                            icono={e.icono}
+                            gasto={e.nombreGasto}
+                            precio={numeroConSeparacion(e.importe)}
+                            eliminar={() => eliminarGasto(e.id)} />
+                        </CSSTransition>
+                      );
+                    })
+                  }
+                </TransitionGroup>
+              )
+          }
+
         </div>
         <div className='flex flex-col h-fit w-full col-span-1'>
 
           <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Ingresos</h2>
-          <TransitionGroup>
-            {
-              ingresos.slice(-5).reverse().map((e) => {
-                const ingresoEncontrado = nombreIngresos.find(nombreIngreso => nombreIngreso.id === e.nombreIngresoId);
-                const icono = ingresoEncontrado.icono !== '' ? ingresoEncontrado.icono : '/icono/flecha-ingresos.png';
-                const nombreIngre = ingresoEncontrado ? ingresoEncontrado.nombre : 'Sin nombre';
 
-                return (
-                  <CSSTransition key={e.id} timeout={500} classNames='fade'>
-                    <GastosCards
-                      key={e.id}
-                      icono={icono}
-                      gasto={nombreIngre}
-                      precio={numerosConSeparacion(e.importe)}
-                      eliminar={() => eliminarIngreso(e.id)}
-                    />
-                  </CSSTransition>
-                );
-              })
-            }
-          </TransitionGroup>
+          {
+            loading || authloading ? (
+              <Loading />) :
+              (
+                <TransitionGroup>
+                  {
+                    ingresos.slice(-5).reverse().map((e) => {
+
+                      return (
+                        <CSSTransition key={e.id} timeout={500} classNames='fade'>
+                          <GastosCards
+                            key={e.id}
+                            icono={e.icono}
+                            gasto={e.nombreIngreso}
+                            precio={numeroConSeparacion(e.importe)}
+                            eliminar={() => eliminarIngreso(e.id)}
+                          />
+                        </CSSTransition>
+                      );
+                    })
+                  }
+                </TransitionGroup>
+              )
+          }
         </div>
       </div>
       <div className='col-span-1'></div>

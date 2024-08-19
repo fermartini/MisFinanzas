@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { useAuth } from '../../context/authContext'
+import Loading from './Loading';
 
 export default function Home() {
-  const { user, gastos, ingresos } = useAuth();
+  const { user, gastos, ingresos, loading, authloading } = useAuth();
   const [totalGastos, setTotalGastos] = useState(0)
   const [totalIngresos, setTotalIngresos] = useState(0)
   const [totalBalance, setTotalBalance] = useState(0)
@@ -53,19 +54,19 @@ export default function Home() {
         <figure class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 md:rounded-es-lg md:col-span-2 md:border-b-0  dark:bg-gray-800 dark:border-gray-700">
           <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">BALANCE</h3>
-            <p class="my-4 text-3xl" style={{ color: totalBalance > 0 ? 'green' : 'red' }}>$ {numerosConSeparacion(totalBalance)}</p>
+            {loading || authloading ? <div><Loading/></div> : <p class="my-4 text-3xl" style={{ color: totalBalance > 0 ? 'green' : 'red' }}>$ {numerosConSeparacion(totalBalance)}</p>}
           </blockquote>
         </figure>
         <figure class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-t-lg md:rounded-t-none md:rounded-ss-lg md:border-e dark:bg-gray-800 dark:border-gray-700">
           <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">INGRESOS</h3>
-            <p class="my-4 text-3xl">$ {numerosConSeparacion(totalIngresos)}</p>
+            {loading || authloading ? <div><Loading/></div> : <p class="my-4 text-3xl">$ {numerosConSeparacion(totalIngresos)}</p>}
           </blockquote>
         </figure>
         <figure class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700">
           <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">GASTOS</h3>
-            <p class="my-4 text-3xl">$ {numerosConSeparacion(totalGastos)}</p>
+            {loading || authloading ? <div><Loading/></div> : <p class="my-4 text-3xl">$ {numerosConSeparacion(totalGastos)}</p>}
           </blockquote>
         </figure>
       </div>

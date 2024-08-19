@@ -8,15 +8,9 @@ import Resumen from './components/page/Resumen';
 import Add from './components/page/Add';
 import Graficos from './components/page/Graficos';
 import Perfil from './components/page/Perfil';// Componente de carga
-import Loading from './components/page/Loading';
 
 function AppContent() {
-  const { loading, authLoading } = useAuth();
 
-  if (loading || authLoading) {
-    return <Loading/>; // Mostrar pantalla de carga mientras se obtiene la información del usuario
-  }
-  else{
     return (
       <>
         <NavBar />
@@ -30,7 +24,7 @@ function AppContent() {
         </Routes>
       </>
     );
-  }
+  
 
   
 }
