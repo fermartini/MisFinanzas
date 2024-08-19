@@ -41,7 +41,7 @@ export default function Resumen() {
             setIngresosConNombre(ingresosActualizados);
         }
 
-    }, [gastos])
+    }, [gastos, ingresos])
 
 
 
