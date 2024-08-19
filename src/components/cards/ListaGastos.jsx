@@ -110,10 +110,10 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', i
             pauseOnHover
             theme="dark"
           />
-            <div className="grid grid-cols-3 items-center justify-between mb-4 ">
+            <div className="grid grid-cols-4 xl:grid-cols-3 items-center justify-between mb-4 ">
                 <img src={icono} alt="" className='w-10' />
                 <h5 className="text-xl font-bold text-start text-nowrap leading-none ">{loading || authloading? 'cargando...' : gastoNombre}</h5>
-                <p className='text-2xl text-gray-500 text-end'>$ {numeroConSeparacion(importe)}</p>
+                <p className='lg:text-2xl text-gray-500 text-end text-xs col-span-2 xl:col-span-1'>$ {numeroConSeparacion(importe)}</p>
             </div>
             
            {gastos.map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
