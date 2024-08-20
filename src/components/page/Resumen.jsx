@@ -58,7 +58,7 @@ useEffect(() => {
     return (
         <div className='min-h-screen max-w-screen flex flex-col items-center text-yellow-100 text-5xl my-10 mx-10'>
             <div>
-                <h2 className='text-gray-300 text-center' >RESUMEN</h2>
+                <h2 className='text-gray-300 text-center' >DETALLES</h2>
             </div>
             <div className='flex flex-col  gap-10 my-10'>
                 <div>

@@ -116,8 +116,8 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', i
                 <p className='lg:text-xl text-gray-400 text-end text-xs col-span-2'>$ {numeroConSeparacion(importe)}</p>
             </div>
             
-           {gastos.map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
-           {ingresos.map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno key={ingreso.id} detalle={ingreso.nombreIngreso } importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio}/>): null))}
+           {[...gastos].reverse().map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
+           {[...ingresos].reverse().map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno key={ingreso.id} detalle={ingreso.nombreIngreso } importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio}/>): null))}
         </div>
 
     )
