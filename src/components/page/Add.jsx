@@ -239,9 +239,9 @@ export default function Add() {
 
   };
 
-  if (!user  && authloading) {
+  if (!user) {
     return (
-      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>INICIA SESION</div>)
+      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : 'INICIA SESION'}</div>)
   }
   return (
     <div className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden '>
