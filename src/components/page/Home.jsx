@@ -39,7 +39,7 @@ export default function Home() {
     
   }, [gastos, ingresos, totalIngresos, totalGastos, mesElegido])
 
-  if (!user) {
+  if (!user && authloading) {
     return (
       <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>INICIA SESION</div>)
   }
