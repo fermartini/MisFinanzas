@@ -104,6 +104,7 @@ export function AuthProvider({ children }) {
         try {
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
+            
             setUser(result.user);
             return result.user;
         } catch (error) {
@@ -119,6 +120,7 @@ export function AuthProvider({ children }) {
         try {
             await signOut(auth);
             setUser(null);
+            
         } catch (error) {
             console.error("Error al cerrar sesión:", error);
         }

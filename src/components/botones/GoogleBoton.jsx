@@ -16,24 +16,25 @@ export default function GoogleBoton() {
 
     try {
       const users = await loginWithGoogle();
+      
 
       if (users) {
         const userData = {        
-          Nombre_Usuario: users.displayName,
-          Nombre: users.displayName,
-          Mail: users.email,
-          FotoPerfil: users.photoURL,
+          nombre_Usuario: users.displayName,
+          nombre: users.displayName,
+          mail: users.email,
+          fotoPerfil: users.photoURL,
           id: users.uid
         };
-        setUser(userData);
-        console.log('userData:', userData);
-        
-        const existingUserResponse = await fetch(`${API_URL}/api/Usuarios/mail/${userData.Mail}`);
+        const existingUserResponse = await fetch(`${API_URL}/api/Usuarios/${userData.id}`);
         if (existingUserResponse.ok) {
           const existingUser = await existingUserResponse.json();
           console.log('Usuario existente:', existingUser);
 
+          
+
           setUser(existingUser);
+          localStorage.setItem('fotoPerfil', existingUser.fotoPerfil);
           navigate('/'); // Redirige después de establecer el usuario
         } else {
           const response = await fetch(`${API_URL}/api/Usuarios`, {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import HomeIcono from './iconos/HomeIcono';
@@ -11,6 +11,13 @@ import LoginIcon from './iconos/LoginIcono';
 
 export default function NavBar() {
     const { user, logout, loading, authLoading } = useAuth();
+    const [src, setSrc] = useState('https://fermartini.github.io/imggastapp/perfil/sin-foto.png');
+
+    useEffect(() => {
+        setSrc(localStorage.getItem('fotoPerfil') || 'https://fermartini.github.io/imggastapp/perfil/sin-foto.png');
+        console.log(src);
+        
+    }, [user]);
 
     const navigate = useNavigate();
 
@@ -34,6 +41,7 @@ export default function NavBar() {
             if (result.isConfirmed) {
                 try {
                     await logout();
+                    localStorage.clear();
                     navigate('/login');
                 } catch (error) {
                     console.error("Error al cerrar sesión:", error);
@@ -78,7 +86,7 @@ export default function NavBar() {
                 {user ? (
                     <>
                         <Link to='/perfil' data-tooltip-target="tooltip-profile" type="Link" className="inline-flex flex-col items-center justify-center px-5 rounded-e-full  hover:bg-gray-800 group" onClick={cerrarSesion} >
-                            <PerfilIcono perfil={user.FotoPerfil} /> 
+                            <PerfilIcono perfil={src} /> 
                         </Link>
                         <div id="tooltip-profile" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300  rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
                             Perfil
