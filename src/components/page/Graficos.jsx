@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useAuth} from '../../context/authContext'
 import Loading from '../page/Loading'
+import Sesion from './Sesion.jsx'
 
 export default function Graficos() {
   const {gastos, ingresos, loading , authloading, nombreGastos, nombreIngresos, user} = useAuth()
@@ -39,7 +40,7 @@ export default function Graficos() {
   }, [])
   if (!user) {
     return (
-      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : 'INICIA SESION'}</div>)
+      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : <Sesion/> }</div>)
   }
   return (
      <div className='h-screen flex justify-center items-center text-yellow-100 text-5xl'>{gastosCategoria.map(gasto => gasto.nombreGasto)}</div>

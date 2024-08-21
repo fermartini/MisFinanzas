@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/authContext';
 import Loading from './Loading';
 import ListaGastos from '../cards/ListaGastos.jsx';
+import Sesion from './Sesion.jsx';
 
 export default function Resumen() {
     const {gastos, setGastos,ingresos, setIngresos, nombreGastos,nombreIngresos, loading, authloading, user} = useAuth();
@@ -53,7 +54,7 @@ useEffect(() => {
     }, [gastos, ingresos])
     if (!user) {
         return (
-          <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : 'INICIA SESION'}</div>)
+          <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : <Sesion/> }</div>)
       }
     return (
         <div className='min-h-screen max-w-screen flex flex-col items-center text-yellow-100 text-5xl my-10 mx-10'>
