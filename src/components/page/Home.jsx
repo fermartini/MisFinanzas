@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import { useAuth } from '../../context/authContext'
 import Loading from './Loading';
 import { numeroConSeparacion } from '../funciones';
+import HomeSinLog from './HomeSinLog';
 
 export default function Home() {
   const { user, gastos, ingresos, loading, authloading } = useAuth();
@@ -42,7 +43,7 @@ export default function Home() {
   if (!user) {
     return (
       
-      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : 'INICIA SESION'}</div>)
+      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : <HomeSinLog/>}</div>)
   }
   return (
     <div className='h-screen  w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl px-5'>
