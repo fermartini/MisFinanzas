@@ -25,7 +25,9 @@ export default function GoogleBoton() {
           FotoPerfil: users.photoURL,
           id: users.uid
         };
-
+        setUser(userData);
+        console.log('userData:', userData);
+        
         const existingUserResponse = await fetch(`${API_URL}/api/Usuarios/mail/${userData.Mail}`);
         if (existingUserResponse.ok) {
           const existingUser = await existingUserResponse.json();

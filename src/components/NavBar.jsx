@@ -10,7 +10,8 @@ import { useAuth } from '../context/authContext';
 import LoginIcon from './iconos/LoginIcono';
 
 export default function NavBar() {
-    const { user, logout } = useAuth();
+    const { user, logout, loading, authLoading } = useAuth();
+
     const navigate = useNavigate();
 
     const cerrarSesion = async (e) => {
@@ -77,7 +78,7 @@ export default function NavBar() {
                 {user ? (
                     <>
                         <Link to='/perfil' data-tooltip-target="tooltip-profile" type="Link" className="inline-flex flex-col items-center justify-center px-5 rounded-e-full  hover:bg-gray-800 group" onClick={cerrarSesion} >
-                            <PerfilIcono perfil={localStorage.getItem('photoUser')} />
+                            <PerfilIcono perfil={user.FotoPerfil} /> 
                         </Link>
                         <div id="tooltip-profile" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300  rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
                             Perfil
@@ -87,7 +88,8 @@ export default function NavBar() {
                 ) : (
                     <>
                         <Link to='/login' data-tooltip-target="tooltip-profile" type="Link" className="inline-flex flex-col items-center justify-center px-5 rounded-e-full  hover:bg-gray-800 group">
-                            <LoginIcon className="w-5 h-5 mb-1  text-gray-400  group-hover:text-blue-500" />
+                            {!authLoading || !loading ? <LoginIcon className="w-5 h-5 mb-1  text-gray-400  group-hover:text-blue-500" /> :
+                                <PerfilIcono perfil={'https://fermartini.github.io/imggastapp/perfil/sin-foto.png'} />}
                         </Link>
                         <div id="tooltip-profile" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300  rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
                             Perfil

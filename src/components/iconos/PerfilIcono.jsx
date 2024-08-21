@@ -1,15 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function PerfilIcono({ perfil }) {
+export default function PerfilIcono({ perfil = 'https://fermartini.github.io/imggastapp/perfil/sin-foto.png' }) {
+    const [src, setSrc] = useState(perfil);
     return (
         <img
-            src={perfil} // Ruta a una imagen por defecto si perfil está vacío
+            src={src} // Ruta a una imagen por defecto si perfil está vacío
             alt="Perfil"
             className="w-8 h-8 rounded-full"
-            onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = "path/to/default/image.png"; // Ruta a una imagen por defecto
-            }}
         />
     );
 }

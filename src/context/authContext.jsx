@@ -105,7 +105,6 @@ export function AuthProvider({ children }) {
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
             setUser(result.user);
-            localStorage.setItem('photoUser', result.user.photoURL);
             return result.user;
         } catch (error) {
             console.error("Error al iniciar sesión con Google:", error);
