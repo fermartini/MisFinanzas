@@ -52,6 +52,9 @@ export default function GoogleBoton() {
 
           const result = await response.json();
           console.log('Usuario guardado correctamente', result);
+          console.log(result);
+          
+          localStorage.setItem('fotoPerfil', result.fotoPerfil);
           setUser(result);
           navigate('/'); // Redirige después de guardar el nuevo usuario
         }
