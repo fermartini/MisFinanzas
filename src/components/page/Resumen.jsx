@@ -61,7 +61,7 @@ useEffect(() => {
             <div>
                 <h2 className='text-gray-300 text-center' >DETALLES</h2>
             </div>
-            <div className='flex flex-col  gap-10 my-10'>
+            <div className='flex flex-col xl:grid xl:grid-cols-2  gap-10 my-10'>
                 <div>
                     <h2 className='text-3xl text-center text-red-500 '>GASTOS</h2>
                     {loading || authloading ? <Loading /> : (gastosConNombre.map((gasto) => (

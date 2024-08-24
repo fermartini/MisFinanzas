@@ -45,7 +45,7 @@ export default function Graficos() {
         {
           data: valores,
           backgroundColor: colors,
-          borderColor: colors.map(color => color.replace('0.6', '1')),
+          borderColor: colors.map(color => color.replace('0.6', '1'))
         },
       ],
     })
