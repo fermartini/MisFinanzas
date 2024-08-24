@@ -48,7 +48,7 @@ export default function GraficosCard({ data, title, loading }) {
   const total = data.datasets[0].data.reduce((a, b) => a + b, 0)
 
   return (
-    <div className="min-w-fit  max-w-3xl bg-slate-900  flex flex-col justify-between  rounded-lg shadow-md p-4 my-8">
+    <div className="min-w-fit  max-w-3xl bg-gray-800 flex flex-col justify-between  rounded-lg shadow-md p-4 my-8">
 
       <div className="mb-6 flex flex-col items-center">
         <h2 className="text-2xl text-yellow-100 font-bold text-center mb-4">GRAFICO DE {title}</h2>
@@ -79,7 +79,7 @@ export default function GraficosCard({ data, title, loading }) {
         </div>
       </div>
 
-      <div className="mt-4 p-3 border text-slate-900   bg-yellow-100 rounded flex justify-center gap-10 ">
+      <div className="mt-4 p-3 border text-gray-800   bg-yellow-100 rounded flex justify-center gap-10 ">
         <p className="lg:text-2xl text-sm  text-start font-extrabold ">
           TOTAL DE {title}:
         </p>
