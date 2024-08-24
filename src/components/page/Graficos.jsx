@@ -63,18 +63,18 @@ export default function Graficos() {
   }
 
   return (
-    <div className="min-h-screen mt-5 mb-20 ">
-      <h2 className='text-gray-300 text-center text-5xl lg:text-8xl' >GRAFICOS</h2>
+    <div className="min-h-screen mt-10 mb-20 ">
+      <h2 className='text-gray-300 text-center text-5xl' >GRAFICOS</h2>
       <div className='flex flex-col lg:flex-row justify-center mx-5 gap-5 '>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 '>
             <GraficosCard
               data={gastosChartData}
-              title="Gastos"
+              title="GASTOS"
               loading={loading}
             />
             <GraficosCard
               data={ingresosChartData}
-              title="Ingresos"
+              title="INGRESOS"
               loading={loading}
             />  
 

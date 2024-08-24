@@ -63,14 +63,14 @@ useEffect(() => {
             </div>
             <div className='flex flex-col  gap-10 my-10'>
                 <div>
-                    <h2 className='text-3xl text-center text-red-500 '>Gastos</h2>
+                    <h2 className='text-3xl text-center text-red-500 '>GASTOS</h2>
                     {loading || authloading ? <Loading /> : (gastosConNombre.map((gasto) => (
                         <ListaGastos icono={gasto.icono} key={gasto.id} importe={gasto.importe}  gastoId={gasto.id} gastoNombre={loading ? 'cargando...' : gasto.nombreGasto}  />
                     ))
                     )}
                 </div>
                 <div>
-                    <h2 className='text-3xl text-center text-green-600 '>Ingresos</h2>
+                    <h2 className='text-3xl text-center text-green-600 '>INGRESOS</h2>
                     {loading || authloading ? <Loading /> : (ingresosConNombre.map((ingreso) => (
                         <ListaGastos icono={ingreso.icono} key={ingreso.id} importe={ingreso.importe} ingresoId={ingreso.id} gastoNombre={loading ? 'cargando...' : ingreso.nombreIngreso} />
                     ))

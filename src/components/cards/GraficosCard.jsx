@@ -51,25 +51,25 @@ export default function GraficosCard({ data, title, loading }) {
     <div className="min-w-fit  max-w-3xl bg-slate-900  flex flex-col justify-between  rounded-lg shadow-md p-4 my-8">
 
       <div className="mb-6 flex flex-col items-center">
-        <h2 className="text-2xl text-yellow-100 font-bold text-center mb-4">Grafico de {title}</h2>
+        <h2 className="text-2xl text-yellow-100 font-bold text-center mb-4">GRAFICO DE {title}</h2>
         {loading ? (
           <div className="flex justify-center items-center h-64 text-white">
             <p className="text-lg">Cargando...</p>
           </div>
         ) : (
-            <Pie data={chartData} />
+            <Pie data={chartData} options={options}/>
 
 
 
         )}
         <div className='w-full mt-5'>
-          <h3 className="text-xl font-semibold  text-yellow-100">Resumen</h3>
+          <h3 className="text-xl font-lato font-semibold  text-yellow-100">Resumen</h3>
         </div>
         <div className="mt-3 flex flex-col justify-start">
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {data.labels.map((label, index) => (
-              <div key={label} className="flex justify-between items-center p-3 text-white border border-yellow-100 rounded">
+              <div key={label} className="flex justify-between items-center p-3 text-white border border-red-200 rounded">
                 <span className="font-medium pr-3">{label}:</span>
                 <span className="font-bold">$ {numeroConSeparacion(data.datasets[0].data[index])}</span>
               </div>
@@ -79,11 +79,11 @@ export default function GraficosCard({ data, title, loading }) {
         </div>
       </div>
 
-      <div className="mt-4 p-3 bg-gray-200 rounded flex gap-10">
-        <p className="lg:text-lg text-sm font-bold text-start ">
-          Total de {title}:
+      <div className="mt-4 p-3 border text-slate-900   bg-yellow-100 rounded flex justify-center gap-10 ">
+        <p className="lg:text-2xl text-sm  text-start font-extrabold ">
+          TOTAL DE {title}:
         </p>
-        <p className="text-sm lg:text-lg font-bold text-start ">
+        <p className="text-sm lg:text-2xl font-extrabold text-start ">
           $ {numeroConSeparacion(total)}
         </p>
       </div>
