@@ -17,3 +17,24 @@
     transition: opacity 500ms, transform 500ms;
   }
   
+  .chartjs-legend {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columnas */
+    gap: 10px; /* Espacio entre las etiquetas */
+  }
+  
+  .chartjs-legend li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .chartjs-legend li span {
+    background-color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    height: 12px;
+    margin-right: 8px;
+    width: 12px;
+  }
+  
