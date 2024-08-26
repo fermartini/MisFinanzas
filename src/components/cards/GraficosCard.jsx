@@ -24,7 +24,6 @@ export default function GraficosCard({ data, title, loading }) {
         data: data.datasets[0].data,
         backgroundColor: data.datasets[0].backgroundColor,
         borderColor: data.datasets[0].borderColor,
-        borderWidth: 1,
       },
     ],
   }
