@@ -44,7 +44,7 @@ export default function Home() {
   if (!user) {
     return (
       
-      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : <Sesion/> }</div>)
+      <div className='min-h-screen  w-screen  text-yellow-100 '>{loading? <Loading/> : <HomeSinLog/>  }</div>)
   }
   return (
     <div className='h-screen  w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl px-5'>

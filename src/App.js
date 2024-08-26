@@ -10,10 +10,11 @@ import Graficos from './components/page/Graficos';
 import Perfil from './components/page/Perfil';// Componente de carga
 
 function AppContent() {
+  const { user } = useAuth();
 
     return (
       <>
-        <NavBar />
+        {user ? <NavBar />: null}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/resumen' element={<Resumen />} />
