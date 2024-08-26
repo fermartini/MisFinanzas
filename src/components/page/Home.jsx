@@ -44,13 +44,12 @@ export default function Home() {
   if (!user) {
     return (
       
-      <div className='min-h-screen  w-screen  text-yellow-100 '>{loading? <Loading/> : <HomeSinLog/>  }</div>)
+      <div className='min-h-screen  w-screen  text-yellow-100 '>{loading || authloading? <Loading/> : <HomeSinLog/>  }</div>)
   }
+  
   return (
+    
     <div className='h-screen  w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl px-5'>
-
-
-
       <div className="grid mb-8 w-full  border  rounded-lg shadow-sm border-gray-700 md:mb-12 md:w-auto md:grid-cols-2  bg-gray-800">
         <h2 className='md:col-span-2 text-center text-base m-3'> INFORME DEL {mesEnCurso} </h2>
 
