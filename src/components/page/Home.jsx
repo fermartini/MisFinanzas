@@ -44,7 +44,7 @@ export default function Home() {
   if (!user) {
     return (
       
-      <div className='min-h-screen  w-screen  text-yellow-100 flex justify-center items-center '>{loading || authloading? <Loading/> : <HomeSinLog/>  }</div>)
+      <div className='min-h-screen    text-yellow-100 flex justify-center items-center '>{loading || authloading? <Loading/> : <HomeSinLog/>  }</div>)
   }
   
   return (
