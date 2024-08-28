@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ResumenIcono() {
+export default function ResumenIcono({add}) {
     return (
         <>
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500" xmlns="http://www.w3.org/2000/svg"
+            <svg viewBox="0 0 24 24" fill="currentColor" className={`w-8 h-8 mb-1  text-gray-400  group-hover:text-blue-700 ${add}`} xmlns="http://www.w3.org/2000/svg"
             ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
                 id="SVGRepo_tracerCarrier"
                 stroke-linecap="round"
