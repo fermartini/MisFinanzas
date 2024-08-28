@@ -16,7 +16,7 @@ export default function NavBar() {
     useEffect(() => {
         setSrc(localStorage.getItem('fotoPerfil') || 'https://fermartini.github.io/imggastapp/perfil/sin-foto.png');
         console.log(src);
-        
+
     }, [user]);
 
     const navigate = useNavigate();
@@ -53,23 +53,23 @@ export default function NavBar() {
 
     return (
         <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 border  rounded-full bottom-4 left-1/2 bg-gray-700 border-gray-600">
-            <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
-                <Link to='/' data-tooltip-target="tooltip-home" type="Link" className={`inline-flex flex-col items-center justify-center px-5 rounded-s-full  hover:bg-gray-800 group ${location.pathname === '/' ? 'bg-gray-800' : ''}`}>
-                    <HomeIcono add={location.pathname === '/' ? 'text-blue-700' : ''}/>
+            <div className="grid h-full w-lg grid-cols-5 mx-auto">
+                <Link to='/' data-tooltip-target="tooltip-home" type="Link" className={`inline-flex flex-col items-center justify-center px-5 rounded-s-full   hover:bg-gray-800 group ${location.pathname === '/' ? 'bg-gray-800 text-blue-700' : 'text-gray-400'}`}>
+                    <HomeIcono />
                 </Link>
                 <div id="tooltip-home" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300  rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
                     Home
                     <div className="tooltip-arrow" data-popper-arrow></div>
                 </div>
-                <Link to='/resumen' data-tooltip-target="tooltip-wallet" type="Link" className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 group ${location.pathname === '/resumen' ? 'bg-gray-800  text-blue-400' : ''}`}>
-                    <ResumenIcono add={location.pathname === '/resumen' ? 'text-blue-700' : ''} />
+                <Link to='/resumen' data-tooltip-target="tooltip-wallet" type="Link" className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 group ${location.pathname === '/resumen' ? 'bg-gray-800  text-blue-700' : 'text-gray-400'}`}>
+                    <ResumenIcono />
                 </Link>
                 <div id="tooltip-wallet" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300  rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
                     Resumen
                     <div className="tooltip-arrow" data-popper-arrow></div>
                 </div>
                 <div className={`flex items-center justify-center ${location.pathname === '/add' ? 'bg-gray-800' : ''}`}>
-                    <Link to='/add' data-tooltip-target="tooltip-new" type="Link" className={`inline-flex items-center justify-center w-10 h-10 font-medium bg-blue-600 rounded-full hover:bg-blue-700 group focus:ring-4  focus:outline-none focus:ring-blue-800 ${location.pathname === '/add' ? 'bg-green-800 focus:ring-green-800' : ''}`}>
+                    <Link to='/add' data-tooltip-target="tooltip-new" type="Link" className={`inline-flex items-center justify-center w-10 h-10 font-medium bg-blue-600 rounded-full hover:bg-blue-700 active:translate-y-1 active:bg-green-800   ${location.pathname === '/add' ? 'bg-green-800 hover:bg-green-900' : ''}`}>
                         <AddIcono add={location.pathname === '/resumen' ? 'text-blue-700' : ''} />
                     </Link>
                 </div>
@@ -77,35 +77,20 @@ export default function NavBar() {
                     Agregar gasto/ingreso
                     <div className="tooltip-arrow" data-popper-arrow></div>
                 </div>
-                <Link to='/resumen/grafico' data-tooltip-target="tooltip-settings" type="Link" className={`inline-flex flex-col items-center justify-center px-5  hover:bg-gray-800 group ${location.pathname === '/resumen/grafico' ? 'bg-gray-800' : ''}`}>
-                    <GraficosIconos add={location.pathname === '/resumen/grafico' ? 'text-blue-700' : ''}/>
+                <Link to='/resumen/grafico' data-tooltip-target="tooltip-settings" type="Link" className={`inline-flex flex-col items-center justify-center px-5  hover:bg-gray-800 group ${location.pathname === '/resumen/grafico' ? 'bg-gray-800 text-blue-700' : 'text-gray-400'}`}>
+                    <GraficosIconos />
                 </Link>
                 <div id="tooltip-settings" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
                     Graficos
                     <div className="tooltip-arrow" data-popper-arrow></div>
                 </div>
-                {user ? (
-                    <>
-                        <Link to='/perfil' data-tooltip-target="tooltip-profile" type="Link" className="inline-flex flex-col items-center justify-center px-5 rounded-e-full  hover:bg-gray-800 group" onClick={cerrarSesion} >
-                            <PerfilIcono perfil={src} /> 
-                        </Link>
-                        <div id="tooltip-profile" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300  rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
-                            Perfil
-                            <div className="tooltip-arrow" data-popper-arrow></div>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <Link to='/login' data-tooltip-target="tooltip-profile" type="Link" className="inline-flex flex-col items-center justify-center px-5 rounded-e-full  hover:bg-gray-800 group">
-                            {!authLoading || !loading ? <LoginIcon className="w-5 h-5 mb-1  text-gray-400  group-hover:text-blue-500" /> :
-                                <PerfilIcono perfil={'https://fermartini.github.io/imggastapp/perfil/sin-foto.png'} />}
-                        </Link>
-                        <div id="tooltip-profile" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300  rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
-                            Perfil
-                            <div className="tooltip-arrow" data-popper-arrow></div>
-                        </div>
-                    </>
-                )}
+                <Link to='/perfil' data-tooltip-target="tooltip-profile" type="Link" className="inline-flex flex-col items-center justify-center px-5 rounded-e-full  hover:bg-gray-800 group" onClick={cerrarSesion} >
+                    <PerfilIcono perfil={src} />
+                </Link>
+                <div id="tooltip-profile" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300  rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
+                    Perfil
+                    <div className="tooltip-arrow" data-popper-arrow></div>
+                </div>
             </div>
         </div>
     );

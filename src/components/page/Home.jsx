@@ -49,7 +49,7 @@ export default function Home() {
   
   return (
     
-    <div className='h-screen  w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl px-5'>
+    <div className='min-h-screen  flex flex-col justify-center items-center text-yellow-100 text-5xl px-5'>
       <div className="grid mb-8 w-full  border  rounded-lg shadow-sm border-gray-700 md:mb-12 md:w-auto md:grid-cols-2  bg-gray-800">
         <h2 className='md:col-span-2 text-center text-base m-3'> INFORME DE {mesEnCurso} </h2>
 

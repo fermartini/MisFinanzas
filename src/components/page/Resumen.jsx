@@ -57,7 +57,7 @@ useEffect(() => {
           <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : <Sesion/> }</div>)
       }
     return (
-        <div className='min-h-screen max-w-screen flex flex-col items-center text-yellow-100 text-5xl my-10 px-5'>
+        <div className='min-h-screen  flex flex-col items-center text-yellow-100 text-5xl my-10 px-5'>
             <div>
                 <h2 className='text-gray-300 text-center' >DETALLES</h2>
             </div>

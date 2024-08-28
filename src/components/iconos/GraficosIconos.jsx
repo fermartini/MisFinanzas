@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function GraficosIconos({add}) {
+export default function GraficosIconos() {
     return (
         <>
 
@@ -8,7 +8,7 @@ export default function GraficosIconos({add}) {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
                 fill="currentColor"
-                className={`w-7 h-7 mb-1  text-gray-400  group-hover:text-blue-700 ${add}`}
+                className={`w-7 h-7 mb-1    group-hover:text-blue-700 `}
             ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
                 id="SVGRepo_tracerCarrier"
                 stroke-linecap="round"
