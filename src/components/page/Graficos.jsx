@@ -17,9 +17,14 @@ export default function Graficos() {
     labels: [],
     datasets: [{ data: [], backgroundColor: [], borderColor: [] }],
   })
+  const [balancesChartData, setBalanecChartData] = useState({
+    labels: [],
+    datasets: [{ data: [], backgroundColor: [], borderColor: [] }],
+  })
 
   const [gastoFiltrado, setGastoFiltrado] = useState([])
   const [ingresoFiltrado, setIngresoFiltrado] = useState([])
+  const [balance, setBalance] = useState(0)
 
   const meses = [];
   const anio = [2024, 2025, 2026]
@@ -91,6 +96,11 @@ export default function Graficos() {
     }
   }, [ingresoFiltrado, mesElegido, anioElegido]);
 
+  
+  useEffect(() => {
+    const totalIngresos = ingresoFiltrado.reduce((acc, item) => acc + parseFloat(item.importe), 0);
+    const totalGastos = gastoFiltrado.reduce((acc, item) => acc + parseFloat(item.importe), 0);
+  }, [mesElegido, anioElegido, ingresoFiltrado, gastoFiltrado]);
   const prepareChartData = (data, setChartData) => {
     if (data.length === 0) {
       // Si no hay datos, establece datos vacíos
@@ -151,8 +161,8 @@ export default function Graficos() {
     )
   }
   return (
-    <div className="min-h-screen mt-10 mb-20 ">
-      <div className='flex flex-col items-center'>
+    <section className="min-h-screen mt-10 mb-20 ">
+      <article className='flex flex-col items-center'>
         <h2 className='text-gray-300 text-center text-5xl' >GRAFICOS</h2>
         <div className='grid grid-cols-2 gap-10 mb-2 text-center'>
 
@@ -172,10 +182,10 @@ export default function Graficos() {
           />
 
         </div>
-      </div>
+      </article>
 
 
-      <div className='flex flex-col lg:flex-row justify-center mx-5 gap-5 '>
+      <article className='flex flex-col lg:flex-row justify-center mx-5 gap-5 '>
 
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 '>
           
@@ -191,11 +201,10 @@ export default function Graficos() {
             title={`INGRESOS`}
             loading={loading}
           />
-
         </div>
 
-      </div>
+      </article>
 
-    </div>
+    </section>
   )
 }

@@ -11,6 +11,7 @@ module.exports = {
         normal: 400,
         bold: 700,
       },
+      
     },
   },
   plugins: [],

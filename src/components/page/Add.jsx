@@ -384,9 +384,9 @@ export default function Add() {
     
   
   return (
-    <div className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden '>
+    <section className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden '>
       <div className='lg:col-span-1'></div>
-      <div className='lg:col-span-2 flex flex-col items-center px-10 mt-10 lg:p-0'>
+      <section className='lg:col-span-2 flex flex-col items-center px-10 mt-10 lg:p-0'>
         <Toggle checked={toggleValue} onChange={handleToggle} />
         <form action="POST" onSubmit={handleSubmit} className='w-full' >
           {!toggleValue ? (
@@ -451,9 +451,9 @@ export default function Add() {
         </form>
 
 
-      </div>
-      <div className="flex-col lg:flex-row col-span-2 h-screen gap-10 w-full px-10 hidden md:flex">
-        <div className='flex flex-col justify-end h-fit w-full col-span-1 '>
+      </section>
+      <section className="flex-col lg:flex-row col-span-2 h-screen gap-10 w-full px-10 hidden md:flex">
+        <article className='flex flex-col justify-end h-fit w-full col-span-1 '>
 
           <h2 className='text-white text-3xl text-center text-nowrap'>Últimos Gastos</h2>
 
@@ -485,8 +485,8 @@ export default function Add() {
               )
           }
 
-        </div>
-        <div className='flex flex-col h-fit w-full col-span-1'>
+        </article>
+        <article className='flex flex-col h-fit w-full col-span-1'>
 
           <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Ingresos</h2>
 
@@ -514,9 +514,9 @@ export default function Add() {
                 </TransitionGroup>
               )
           }
-        </div>
-      </div>
+        </article>
+      </section>
       <div className='col-span-1'></div>
-    </div>
+    </section>
   )
 }

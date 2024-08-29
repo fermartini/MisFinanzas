@@ -10,18 +10,18 @@ const HomeSinLog = () => {
     return (
         <section className='w-screen h-fit py-10 px-5 lg:px-52'>
             <nav className='flex justify-between'>
-                <Link to='/login' className='text-2xl lg:text-5xl'>GastApp</Link>
-                <div className='flex gap-1 lg:gap-5'>
-                    <Link to="/login" className='lg:text-lg text-sm bg-purple-700 rounded-xl p-2 lg:p-5 text-white hover:bg-purple-900 hover:text-red-200 transition-colors text-nowrap'>Iniciar sesión</Link>
-                    <Link to="/login" className='lg:text-lg text-sm bg-purple-700 rounded-xl p-2 lg:p-5 text-white hover:bg-purple-900 hover:text-red-200 transition-colors '>Registrarse</Link>
+                <Link to='/login' className='text-2xl lg:text-5xl'>Finanza Personal</Link>
+                <div className='flex gap-1 lg:gap-5'> 
+                    <Link to="/login" className='lg:text-lg text-sm bg-purple-700 rounded-xl p-2 lg:p-5 text-white hover:bg-purple-900 hover:text-red-200 transition-colors text-nowrap flex justify-center items-center' aria-label="Iniciar sesión en Finanza Personal">Iniciar sesión</Link>
+                    <Link to="/login" className='lg:text-lg text-sm bg-purple-700 rounded-xl p-2 lg:p-5 text-white hover:bg-purple-900 hover:text-red-200 transition-colors flex justify-center items-center' aria-label="Registrate sesión en Finanza Personal">Registrarse</Link>
                 </div>
             </nav>
             <section className='my-20'>
                 <div className='flex flex-col gap-3 lg:gap-5 justify-center items-center text-white  '>
                     <div className='flex'>
                         <div className='flex flex-col justify-center'>
-                            <h2 className='lg:text-6xl text-3xl text-center font-bold'>Controla tus finanzas con facilidad.</h2>
-                            <p className='lg:text-2xl text-sm text-center text-gray-400'>Registra gastos e ingresos, visualiza reportes y toma el control de tu dinero.</p>
+                            <h1 className='lg:text-6xl text-3xl text-center font-bold'>Controla tus finanzas con facilidad.</h1>
+                            <h2 className='lg:text-2xl text-sm text-center text-gray-400'>Registra gastos e ingresos, visualiza reportes y toma el control de tu dinero.</h2>
                         </div>
                     </div>
 
@@ -39,7 +39,7 @@ const HomeSinLog = () => {
             </section>
             <section className='text-white pt-10 flex flex-col items-center gap-5'>
                 <h2 className='lg:text-6xl font-bold text-3xl text-center'>¿Listo para tomar el control de tus finanzas?</h2>
-                <p className='lg:text-2xl text-lg text-center'>Únete a miles de usuarios que ya están ahorrando y gestionando mejor su dinero.</p>
+                <h3 className='lg:text-2xl text-lg text-center'>Únete a miles de usuarios que ya están ahorrando y gestionando mejor su dinero.</h3>
                 <Link to='/login' className='text-lg bg-purple-500 rounded-xl p-5 text-blue-950 font-bold hover:bg-purple-900 hover:text-red-200  transition-colors'>Crear cuenta gratis</Link>
             </section>
             <footer className='container mx-auto px-4 py-8 text-center text-gray-400'>

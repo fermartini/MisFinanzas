@@ -110,7 +110,7 @@ export default function Resumen() {
     if (!user) {
         if (loading || authloading) {
             return (
-                <div className='min-h-screen  flex flex-col items-center text-yellow-100 text-5xl my-10 px-5'>
+                <section className='min-h-screen  flex flex-col items-center text-yellow-100 text-5xl my-10 px-5'>
                     <div>
                         <h2 className='text-gray-300 text-center' >DETALLES</h2>
                     </div>
@@ -141,18 +141,18 @@ export default function Resumen() {
                             <h2 className='text-3xl text-center text-green-600 '>INGRESOS</h2> <div><Loading /></div>
                         </div>
                     </div>
-                </div>
+                </section>
             );
         }
         return (
             <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading ? <Loading /> : <Sesion />}</div>)
     }
     return (
-        <div className='min-h-screen  flex flex-col items-center text-yellow-100 text-5xl my-10 px-5'>
+        <section className='min-h-screen  flex flex-col items-center text-yellow-100 text-5xl my-10 px-5'>
             <div>
                 <h2 className='text-gray-300 text-center' >DETALLES</h2>
             </div>
-            <div className='grid grid-cols-2 gap-10 mb-2 text-center'>
+            <article className='grid grid-cols-2 gap-10 mb-2 text-center'>
 
                 <Select
                     name={mesElegido.label}
@@ -169,8 +169,8 @@ export default function Resumen() {
                     label='Año'
                 />
 
-            </div>
-            <div className='flex flex-col xl:grid xl:grid-cols-2  gap-10 my-10'>
+            </article>
+            <article className='flex flex-col xl:grid xl:grid-cols-2  gap-10 my-10'>
                 <div>
                     <h2 className='text-3xl text-center text-red-500 '>GASTOS</h2>
                     {loading || authloading ? <div><Loading /></div> : (gastosConNombre.map((gasto) => (
@@ -185,7 +185,7 @@ export default function Resumen() {
                     ))
                     )}
                 </div>
-            </div>
-        </div>
+            </article>
+        </section>
     );
 }    
