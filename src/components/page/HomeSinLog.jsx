@@ -10,7 +10,7 @@ const HomeSinLog = () => {
     return (
         <section className='w-screen h-fit py-10 px-5 lg:px-52'>
             <nav className='flex justify-between'>
-                <Link to='/login' className='text-2xl lg:text-5xl'>Finanza Personal</Link>
+                <Link to='/login' className='text-2xl lg:text-5xl'>Mis Finanzas</Link>
                 <div className='flex gap-1 lg:gap-5'> 
                     <Link to="/login" className='lg:text-lg text-sm bg-purple-700 rounded-xl p-2 lg:p-5 text-white hover:bg-purple-900 hover:text-red-200 transition-colors text-nowrap flex justify-center items-center' aria-label="Iniciar sesión en Finanza Personal">Iniciar sesión</Link>
                     <Link to="/login" className='lg:text-lg text-sm bg-purple-700 rounded-xl p-2 lg:p-5 text-white hover:bg-purple-900 hover:text-red-200 transition-colors flex justify-center items-center' aria-label="Registrate sesión en Finanza Personal">Registrarse</Link>
