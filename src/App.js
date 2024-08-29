@@ -10,7 +10,7 @@ import Graficos from './components/page/Graficos';
 import Perfil from './components/page/Perfil';// Componente de carga
 
 function AppContent() {
-  const { user, loading, authloading } = useAuth();
+  const { user } = useAuth();
 
     return (
       <>
