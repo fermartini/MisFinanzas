@@ -52,7 +52,6 @@ export default function Home() {
     })
   }
 
-  console.log(anioElegido);
 
 
   useEffect(() => {
