@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../context/authContext';
 import ListaGastosUno from './ListaGastosUno.jsx';
 import eliminarGastos from '../EliminarGastos.jsx';
@@ -11,8 +11,26 @@ import FetchGastos from '../FetchGastos'
 import API_URL from '../../config.js';
 
 
-export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', importe = 0, icono = '' }) {
+export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', importe = 0, icono = '', mes, anio }) {
     const { gastos, ingresos, setGastos, setIngresos, nombreGastos, nombreIngresos, loading, authloading, user } = useAuth();
+    const [gastoFiltrado, setGastoFiltrado] = useState([])
+    const [ingresoFiltrado, setIngresoFiltrado] = useState([])
+    useEffect(() => {
+      if (gastos) {
+          setGastoFiltrado(gastos.filter(gasto => gasto.mes == mes.value && gasto.anio == anio.value))
+
+      }
+      
+
+  }, [mes, anio, gastos])
+  useEffect(() => {
+      if (ingresos) {
+          setIngresoFiltrado(ingresos.filter(ingreso => ingreso.mes == mes.value && ingreso.anio == anio.value))
+      }
+
+      
+      
+  }, [mes, anio, ingresos])
     const eliminarIngreso = async (e) => {
         Swal.fire(
           {
@@ -116,8 +134,8 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', i
                 <span className='lg:text-xl text-gray-400 text-end text-xs col-span-2'>$ {numeroConSeparacion(importe)}</span>
             </div>
             
-           {[...gastos].reverse().map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
-           {[...ingresos].reverse().map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno key={ingreso.id} detalle={ingreso.nombreIngreso } importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio}/>): null))}
+           {[...gastoFiltrado].reverse().map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
+           {[...ingresoFiltrado].reverse().map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno key={ingreso.id} detalle={ingreso.nombreIngreso } importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio}/>): null))}
         </div>
 
     )
