@@ -116,7 +116,7 @@ export default function Home() {
         </div>
 
         <div className="grid mb-8 w-full  border  rounded-lg shadow-sm border-gray-700 md:mb-12 md:w-auto md:grid-cols-2  bg-gray-800">
-          <h2 className='md:col-span-2 text-center text-base m-3'> INFORME DE {mesElegido.label} </h2>
+          <h2 className='md:col-span-2 text-center text-base m-3'> INFORME DE {mesElegido.label} {anioElegido.label} </h2>
 
           <figure className="flex flex-col items-center justify-center p-8 text-center border-b md:rounded-es-lg md:col-span-2 md:border-b-0  bg-gray-800 border-gray-700">
             <blockquote className="max-w-2xl mx-auto mb-4 lg:mb-8 text-gray-400">
