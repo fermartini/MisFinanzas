@@ -8,7 +8,7 @@ import Select from '../form/Select.jsx'
 import Loading from './Loading.jsx'
 
 export default function Graficos() {
-  const { gastos, ingresos, loading,  user, setLoading } = useAuth()
+  const { gastos, ingresos, loading, user, setLoading } = useAuth()
   const [gastosChartData, setGastosChartData] = useState({
     labels: [],
     datasets: [{ data: [], backgroundColor: [], borderColor: [] }],
@@ -17,7 +17,7 @@ export default function Graficos() {
     labels: [],
     datasets: [{ data: [], backgroundColor: [], borderColor: [] }],
   })
-  
+
   const [gastoFiltrado, setGastoFiltrado] = useState([])
   const [ingresoFiltrado, setIngresoFiltrado] = useState([])
 
@@ -65,12 +65,12 @@ export default function Graficos() {
 
 
   useEffect(() => {
-    if(gastos){
+    if (gastos) {
       setGastoFiltrado(gastos.filter(gasto => gasto.mes == mesElegido.value && gasto.anio == anioElegido.value))
-      
+
     }
-    
-    
+
+
   }, [mesElegido, anioElegido, gastos])
 
   useEffect(() => {
@@ -82,8 +82,8 @@ export default function Graficos() {
     if (ingresos) {
       setIngresoFiltrado(ingresos.filter(ingreso => ingreso.mes == mesElegido.value && ingreso.anio == anioElegido.value))
     }
-    
-    
+
+
   }, [mesElegido, anioElegido, ingresos])
   useEffect(() => {
     if (ingresoFiltrado) {
@@ -106,7 +106,7 @@ export default function Graficos() {
       });
       return;
     }
-  
+
     const agrupados = data.reduce((acc, item) => {
       const nombre = item.nombreGasto || item.nombreIngreso;
       if (!acc[nombre]) {
@@ -115,11 +115,11 @@ export default function Graficos() {
       acc[nombre] += parseFloat(item.importe);
       return acc;
     }, {});
-  
+
     const labels = Object.keys(agrupados);
     const valores = Object.values(agrupados);
     const colors = generateColors(labels.length);
-  
+
     setChartData({
       labels,
       datasets: [
@@ -144,18 +144,18 @@ export default function Graficos() {
   }
 
   if (!user) {
-    return(
+    return (
       <div className="flex justify-center items-center h-screen">
-        <Loading/>
+        <Loading />
       </div>
     )
   }
   return (
     <div className="min-h-screen mt-10 mb-20 ">
       <div className='flex flex-col items-center'>
-      <h2 className='text-gray-300 text-center text-5xl' >GRAFICOS</h2>
-        <div className='grid grid-cols-2 gap-10 mb-5 text-center'>
-          
+        <h2 className='text-gray-300 text-center text-5xl' >GRAFICOS</h2>
+        <div className='grid grid-cols-2 gap-10 mb-2 text-center'>
+
           <Select
             name={mesElegido.label}
             value={mesElegido.value}
@@ -180,13 +180,13 @@ export default function Graficos() {
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 '>
           
           <GraficosCard
-          key={`gastos-${mesElegido.value}-${anioElegido.value}`}
+            key={`gastos-${mesElegido.value}-${anioElegido.value}`}
             data={gastosChartData}
             title={`GASTOS`}
             loading={loading}
           />
           <GraficosCard
-          key={`ingresos-${mesElegido.value}-${anioElegido.value}`}
+            key={`ingresos-${mesElegido.value}-${anioElegido.value}`}
             data={ingresosChartData}
             title={`INGRESOS`}
             loading={loading}

@@ -34,6 +34,7 @@ export default function GraficosCard({ data, title, loading }) {
     plugins: {
       legend: {
         position: 'top',
+        color: 'white'
       },
       title: {
         display: true,
@@ -48,7 +49,7 @@ export default function GraficosCard({ data, title, loading }) {
   const total = data.datasets[0].data.reduce((a, b) => a + b, 0)
 
   return (
-    <div className="  bg-gray-800 flex flex-col justify-between  rounded-lg shadow-md mx-2 p-4 my-8">
+    <div className="min-w-fit  max-w-3xl bg-gray-800 flex flex-col justify-between  rounded-lg shadow-md p-4 my-8">
 
       <div className="mb-6 flex flex-col items-center">
         <h2 className="text-2xl text-yellow-100 font-bold text-center mb-4">{title}</h2>
@@ -57,7 +58,10 @@ export default function GraficosCard({ data, title, loading }) {
             <Loading/>
           </div>
         ) : (
-            <Pie data={chartData} options={options}/>
+          <div>
+<Pie data={chartData} options={options} />
+          </div>
+            
 
 
 
