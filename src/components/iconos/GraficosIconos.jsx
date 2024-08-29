@@ -9,10 +9,10 @@ export default function GraficosIconos() {
                 viewBox="0 0 512 512"
                 fill="currentColor"
                 className={`w-7 h-7 mb-1    group-hover:text-blue-700 `}
-            ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+            ><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g
                 id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                strokeLinecap="round"
+                strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier">
                     <g>
                         <rect width="30.364" height="457.98"></rect>
                         <rect

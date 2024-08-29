@@ -15,7 +15,7 @@ export default function NavBar() {
 
     useEffect(() => {
         setSrc(localStorage.getItem('fotoPerfil') || 'https://fermartini.github.io/imggastapp/perfil/sin-foto.png');
-        console.log(src);
+        
 
     }, [user]);
 

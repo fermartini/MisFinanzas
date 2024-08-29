@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { format } from 'date-fns'
 import { useAuth } from '../../context/authContext'
 import Loading from './Loading';
 import { numeroConSeparacion } from '../funciones';
 import HomeSinLog from './HomeSinLog';
 import Select from '../form/Select.jsx'
-import Sesion from './Sesion.jsx';
 
 export default function Home() {
   const { user, gastos, ingresos, loading, authloading } = useAuth();
@@ -85,7 +83,7 @@ export default function Home() {
       }, 0))
     setTotalBalance(totalIngresos - totalGastos)
 
-    console.log(mesElegido);
+    
 
   }, [gastos, ingresos, totalIngresos, totalGastos, mesElegido, anioElegido])
 
@@ -97,20 +95,20 @@ export default function Home() {
     return (
 
       <div className='min-h-screen mt-5 lg:mt-0  flex flex-col lg:justify-center items-center text-yellow-100 text-5xl px-5'>
-        <div className='flex gap-10 mb-5 text-center'>
+        <div className='grid grid-cols-2 mb-5 text-center gap-10'>
           <Select
             name={mesElegido.label}
             value={mesElegido.value}
             onChange={cambioMes}
             options={meses.map((mes) => ({ value: mes.value, label: mes.label }))}
-            label='Mes:'
+            label='Mes'
           />
           <Select
             name={anioElegido.value}
             value={anioElegido.value}
             onChange={cambioAnio}
             options={anio.map((anio) => ({ value: anio, label: anio }))}
-            label='Año:'
+            label='Año'
           />
 
         </div>

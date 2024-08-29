@@ -19,8 +19,7 @@ useEffect(() => {
         if (gastos) {
             const gastosActualizados = Array.from(new Set(gastos.map(gasto => gasto.nombreGastoId)))
             .map(id => {
-                const nombreGasto = nombreGastos.find(n => n.id === id);     
-                console.log(nombreGasto);
+                const nombreGasto = nombreGastos.find(n => n.id === id);  
                 
                 const total = gastos.reduce((acc, curr) => acc + (curr.nombreGastoId === id ? curr.importe : 0), 0)
                 return {
@@ -31,7 +30,6 @@ useEffect(() => {
                 };
             });
             setGastosConNombre(gastosActualizados);
-            console.log(gastosConNombre);
         }
         if(ingresos){
             const ingresosActualizados = Array.from(new Set(ingresos.map(ingreso =>ingreso.nombreIngresoId)))
