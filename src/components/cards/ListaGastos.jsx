@@ -113,7 +113,7 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', i
             <div className="grid grid-cols-4  items-center justify-between mb-4 ">
                 <img src={icono} alt="" className='w-10' />
                 <h5 className="text-xl font-bold text-start text-nowrap leading-none ">{loading || authloading? 'cargando...' : gastoNombre}</h5>
-                <p className='lg:text-xl text-gray-400 text-end text-xs col-span-2'>$ {numeroConSeparacion(importe)}</p>
+                <span className='lg:text-xl text-gray-400 text-end text-xs col-span-2'>$ {numeroConSeparacion(importe)}</span>
             </div>
             
            {[...gastos].reverse().map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}

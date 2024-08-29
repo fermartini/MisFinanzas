@@ -9,6 +9,7 @@ import {
   Legend
 } from 'chart.js'
 import { numeroConSeparacion } from '../funciones'
+import Loading from '../page/Loading'
 
 ChartJS.register(
   ArcElement,
@@ -53,7 +54,7 @@ export default function GraficosCard({ data, title, loading }) {
         <h2 className="text-2xl text-yellow-100 font-bold text-center mb-4">GRAFICO DE {title}</h2>
         {loading ? (
           <div className="flex justify-center items-center h-64 text-white">
-            <p className="text-lg">Cargando...</p>
+            <Loading/>
           </div>
         ) : (
             <Pie data={chartData} options={options}/>

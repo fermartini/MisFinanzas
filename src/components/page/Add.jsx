@@ -241,9 +241,148 @@ export default function Add() {
   };
 
   if (!user) {
-    return (
-      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : <Sesion/> }</div>)
-  }
+    if(loading || authloading) {
+      return (
+        <div className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden '>
+          <div className='lg:col-span-1'></div>
+          <div className='lg:col-span-2 flex flex-col items-center px-10 mt-10 lg:p-0'>
+            <Toggle checked={toggleValue} onChange={handleToggle} />
+            <form action="POST" onSubmit={handleSubmit} className='w-full' >
+              {!toggleValue ? (
+                <>
+                  <h2 className='text-3xl text-center text-white pt-5'>AGREGAR GASTO</h2>
+    
+                  <Select
+                    name='NombreGastoId'
+                    value={formValues.NombreGastoId}
+                    onChange={cambioTexto}
+                    options={loading || authloading ? [{ value: 'cargando...', label: 'cargando...' }] : nombreGastos.map(nombreGasto => ({ value: nombreGasto.id, label: nombreGasto.nombre }))}
+                    label='Gasto'
+                  />
+                  <div className='flex justify-between gap-5'>
+                    <Input
+                      name='importe'
+                      value={formValues.importe}
+                      onChange={cambioTexto}
+                    />
+                    <Fecha traerFecha={tomarDias} />
+                  </div>
+                  <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='EJ: 1kg de arroz, 2 paquetes de fideos, etc....' />
+    
+                </>
+              ) : (
+                <>
+                  <h2 className='text-3xl text-center text-white pt-5'>AGREGAR INGRESO</h2>
+                  <Select
+                    name='NombreIngresoId'
+                    value={formValues.NombreIngresoId}
+                    onChange={cambioTexto}
+                    options={nombreIngresos.map(nombreIngreso => ({ value: nombreIngreso.id, label: nombreIngreso.nombre }))}
+                    label='Ingreso'
+                  />
+                  <div className='flex justify-between gap-5'>
+                    <Input
+                      name='importe'
+                      value={formValues.importe}
+                      onChange={cambioTexto}
+                    />
+                    <Fecha traerFecha={tomarDias} />
+                  </div>
+                  <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='' disabled={true}/>
+    
+                </>
+              )}
+              <FormBoton />
+    
+              <ToastContainer position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+    
+              />
+    
+            </form>
+    
+    
+          </div>
+          <div className="flex-col lg:flex-row col-span-2 h-screen gap-10 w-full px-10 hidden md:flex">
+            <div className='flex flex-col justify-end h-fit w-full col-span-1 '>
+    
+              <h2 className='text-white text-3xl text-center text-nowrap'>Últimos Gastos</h2>
+    
+              {
+                loading || authloading ? (
+                  <Loading />) :
+                  (
+                    <TransitionGroup>
+                      {
+                        gastos.slice(-5).reverse().map((e) => {
+    
+                          return (
+    
+                            <CSSTransition
+                              key={e.id}
+                              timeout={500}
+                              classNames='fade'>
+                              <GastosCards
+                                key={e.id}
+                                icono={e.icono}
+                                gasto={e.nombreGasto}
+                                precio={numeroConSeparacion(e.importe)}
+                                eliminar={() => eliminarGasto(e.id)} />
+                            </CSSTransition>
+                          );
+                        })
+                      }
+                    </TransitionGroup>
+                  )
+              }
+    
+            </div>
+            <div className='flex flex-col h-fit w-full col-span-1'>
+    
+              <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Ingresos</h2>
+    
+              {
+                loading || authloading ? (
+                  <Loading />) :
+                  (
+                    <TransitionGroup>
+                      {
+                        ingresos.slice(-5).reverse().map((e) => {
+    
+                          return (
+                            <CSSTransition key={e.id} timeout={500} classNames='fade'>
+                              <GastosCards
+                                key={e.id}
+                                icono={e.icono}
+                                gasto={e.nombreIngreso}
+                                precio={numeroConSeparacion(e.importe)}
+                                eliminar={() => eliminarIngreso(e.id)}
+                              />
+                            </CSSTransition>
+                          );
+                        })
+                      }
+                    </TransitionGroup>
+                  )
+              }
+            </div>
+          </div>
+          <div className='col-span-1'></div>
+        </div>
+      )
+    } else return (
+      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'><Sesion/> </div>)
+    }
+    
+  
   return (
     <div className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden '>
       <div className='lg:col-span-1'></div>

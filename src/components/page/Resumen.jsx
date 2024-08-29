@@ -53,6 +53,24 @@ useEffect(() => {
         
     }, [gastos, ingresos])
     if (!user) {
+        if(loading || authloading){
+            return (
+                <div className='min-h-screen  flex flex-col items-center text-yellow-100 text-5xl my-10 px-5'>
+                    <div>
+                        <h2 className='text-gray-300 text-center' >DETALLES</h2>
+                    </div>
+                    <div className='flex flex-col xl:grid xl:grid-cols-2  gap-10 my-10'>
+                        <div>
+                            <h2 className='text-3xl text-center text-red-500 '>GASTOS</h2>
+                             <div><Loading /></div> 
+                        </div>
+                        <div>
+                            <h2 className='text-3xl text-center text-green-600 '>INGRESOS</h2> <div><Loading /></div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         return (
           <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'>{loading? <Loading/> : <Sesion/> }</div>)
       }
@@ -64,15 +82,15 @@ useEffect(() => {
             <div className='flex flex-col xl:grid xl:grid-cols-2  gap-10 my-10'>
                 <div>
                     <h2 className='text-3xl text-center text-red-500 '>GASTOS</h2>
-                    {loading || authloading ? <Loading /> : (gastosConNombre.map((gasto) => (
-                        <ListaGastos icono={gasto.icono} key={gasto.id} importe={gasto.importe}  gastoId={gasto.id} gastoNombre={loading ? 'cargando...' : gasto.nombreGasto}  />
+                    {loading || authloading ? <div><Loading /></div>  : (gastosConNombre.map((gasto) => (
+                        <ListaGastos icono={gasto.icono} key={gasto.id} importe={gasto.importe}  gastoId={gasto.id} gastoNombre={gasto.nombreGasto}  />
                     ))
                     )}
                 </div>
                 <div>
                     <h2 className='text-3xl text-center text-green-600 '>INGRESOS</h2>
-                    {loading || authloading ? <Loading /> : (ingresosConNombre.map((ingreso) => (
-                        <ListaGastos icono={ingreso.icono} key={ingreso.id} importe={ingreso.importe} ingresoId={ingreso.id} gastoNombre={loading ? 'cargando...' : ingreso.nombreIngreso} />
+                    {loading || authloading ? <div><Loading /></div>  : (ingresosConNombre.map((ingreso) => (
+                        <ListaGastos icono={ingreso.icono} key={ingreso.id} importe={ingreso.importe} ingresoId={ingreso.id} gastoNombre={ ingreso.nombreIngreso} />
                     ))
                     )}
                 </div>
