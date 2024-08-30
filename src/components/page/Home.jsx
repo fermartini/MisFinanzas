@@ -118,7 +118,7 @@ export default function Home() {
 
           <figure className="flex flex-col items-center justify-center p-8 text-center border-b md:rounded-es-lg md:col-span-2 md:border-b-0  bg-gray-800 border-gray-700">
             <blockquote className="max-w-2xl mx-auto mb-4 lg:mb-8 text-gray-400">
-              <h3 className="text-lg font-semibold  text-white">BALANCE</h3>
+              <h1 className="text-lg font-semibold  text-white">BALANCE</h1>
               {loading || authloading ? <div><Loading /></div> : <p className="my-4 text-3xl" style={{ color: totalBalance > 0 ? 'green' : 'red' }}>$ {numeroConSeparacion(totalBalance)}</p>}
             </blockquote>
           </figure>

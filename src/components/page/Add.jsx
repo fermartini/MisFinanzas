@@ -250,7 +250,7 @@ export default function Add() {
             <form action="POST" onSubmit={handleSubmit} className='w-full' >
               {!toggleValue ? (
                 <>
-                  <h2 className='text-3xl text-center text-white pt-5'>AGREGAR GASTO</h2>
+                  <h1 className='text-3xl text-center text-white pt-5'>AGREGAR GASTO</h1>
     
                   <Select
                     name='NombreGastoId'

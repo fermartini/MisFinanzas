@@ -22,9 +22,9 @@ export default function Sesion() {
       <form className='h-screen flex justify-center items-center flex-col '>
         
         <article className='mb-5 flex justify-center px-7'>
-          <span className='bg-gradient-to-t from-[#c7d2fe] to-[#8678f9] bg-clip-text text-2xl  text-transparent'>
+          <h1 className='bg-gradient-to-t from-[#c7d2fe] to-[#8678f9] bg-clip-text text-2xl  text-transparent'>
             Inicia Sesion / Registrate con:
-          </span>
+          </h1>
         </article>
         <div className='bg-blue-950  rounded-xl justify-center items-center flex p-1 shadow-sm shadow-white hover:bg-blue-900 active:bg-blue-950 active:translate-y-1 transition-all duration-75'>
           <GoogleBoton />

@@ -150,7 +150,7 @@ export default function Resumen() {
     return (
         <section className='min-h-screen  flex flex-col items-center text-yellow-100 text-5xl my-10 px-5'>
             <div>
-                <h2 className='text-gray-300 text-center' >DETALLES</h2>
+                <h1 className='text-gray-300 text-center' >DETALLES</h1>
             </div>
             <article className='grid grid-cols-2 gap-10 mb-2 text-center'>
 

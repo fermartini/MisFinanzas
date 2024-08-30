@@ -163,7 +163,7 @@ export default function Graficos() {
   return (
     <section className="min-h-screen mt-10 mb-20 ">
       <article className='flex flex-col items-center'>
-        <h2 className='text-gray-300 text-center text-5xl' >GRAFICOS</h2>
+        <h1 className='text-gray-300 text-center text-5xl' >GRAFICOS</h1>
         <div className='grid grid-cols-2 gap-10 mb-2 text-center'>
 
           <Select
