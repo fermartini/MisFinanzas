@@ -116,7 +116,7 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', i
       };
 
     return (
-        <div className="w-full  p-4 border  rounded-lg text-sm shadow sm:p-8 bg-gray-800 border-gray-700 my-5 animate-fade">
+        <div className="w-full  p-4 border  rounded-lg text-sm shadow sm:p-8 bg-gray-800 border-gray-700 dark:bg-gray-800 dark:border-gray-700 my-5 animate-fade">
             <ToastContainer position="top-right"
             autoClose={5000}
             hideProgressBar={false}
