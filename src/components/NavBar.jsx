@@ -52,7 +52,7 @@ export default function NavBar() {
     };
 
     return (
-        <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 border  rounded-full bottom-4 left-1/2 bg-gray-700 border-gray-600">
+        <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 border  rounded-full bottom-4 left-1/2 bg-gray-700 dark:bg-gray-700 border-gray-600 dark:border-gray-600">
             <div className="grid h-full w-lg grid-cols-5 mx-auto">
                 <Link to='/' data-tooltip-target="tooltip-home" type="Link" className={`inline-flex flex-col items-center justify-center px-5 rounded-s-full   hover:bg-gray-800 group ${location.pathname === '/' ? 'bg-gray-800 text-blue-700' : 'text-gray-400'}`}>
                     <HomeIcono />
