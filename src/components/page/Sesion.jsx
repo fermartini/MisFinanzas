@@ -15,14 +15,14 @@ export default function Sesion() {
       <>
         <div className='mx-10 relative'>
         <Link to="/" className='bg-gray-700 w-fit absolute top-0 left-0 text-white text-2xl h-20 lg:w-32  my-10  lg:m-10 hover:text-red-500  rounded-xl justify-center items-center flex p-1 shadow-sm shadow-white  active:translate-y-1 transition-all duration-75'>
-        <FlechaVolver style='w-10 m-5'/>
+        <FlechaVolver style='w-5 mx-5'/>
         </Link>
         </div>
         
       <form className='h-screen flex justify-center items-center flex-col '>
         
         <article className='mb-5 flex justify-center px-7'>
-          <h1 className='bg-gradient-to-t from-[#c7d2fe] to-[#8678f9] bg-clip-text text-2xl  text-transparent'>
+          <h1 className='bg-gradient-to-t from-[#c7d2fe] to-[#8678f9] bg-clip-text text-xl  text-transparent'>
             Inicia Sesion / Registrate con:
           </h1>
         </article>
