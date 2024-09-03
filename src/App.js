@@ -8,6 +8,7 @@ import Resumen from './components/page/Resumen';
 import Add from './components/page/Add';
 import Graficos from './components/page/Graficos';
 import Perfil from './components/page/Perfil';// Componente de carga
+import Page404 from './components/page/Page404';
 
 function AppContent() {
   const { user } = useAuth();
@@ -22,6 +23,7 @@ function AppContent() {
           <Route path='/resumen/grafico' element={<Graficos />} />
           <Route path='/perfil' element={<Perfil />} />
           <Route path='/login' element={<Sesion />} />
+          <Route path="*" element={<Page404/>} />
         </Routes>
       </>
     );
