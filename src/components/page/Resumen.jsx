@@ -93,7 +93,7 @@ export default function Resumen() {
             const ingresosActualizados = Array.from(new Set(ingresoFiltrado.map(ingreso => ingreso.nombreIngresoId)))
                 .map(id => {
                     const nombreIngreso = nombreIngresos.find(n => n.id === id);
-                    const total = ingresos.reduce((acc, curr) => acc + (curr.nombreIngresoId === id ? curr.importe : 0), 0)
+                    const total = ingresoFiltrado.reduce((acc, curr) => acc + (curr.nombreIngresoId === id ? curr.importe : 0), 0)
                     return {
                         id: nombreIngreso.id,
                         nombreIngreso: nombreIngreso.nombre,
