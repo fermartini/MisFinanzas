@@ -133,9 +133,29 @@ export default function ListaGastos({ gastoId = '', gastoNombre, ingresoId='', i
                 <h5 className="text-xl font-bold text-start text-nowrap leading-none ">{loading || authloading? 'cargando...' : gastoNombre}</h5>
                 <span className='lg:text-xl text-gray-400 text-end text-xs col-span-2'>$ {numeroConSeparacion(importe)}</span>
             </div>
-            
-           {[...gastoFiltrado].reverse().map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio}/>): null))}
-           {[...ingresoFiltrado].reverse().map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno key={ingreso.id} detalle={ingreso.nombreIngreso } importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio}/>): null))}
+            <div className="flow-root">
+            <ul role="list" className="divide-y  divide-gray-700 w-full border-b border-blue-300  ">
+                <li className="py-3 sm:py-4 gap-5 grid grid-cols-4 ">
+                    <div className='flex gap-3 justify-around'>
+                        <p className='text-xs xl:text-sm'>Ok</p>
+                        <p className="text-xs xl:text-sm truncate ">dia</p>
+                    </div>
+
+                    <p className="text-xs xl:text-sm truncate  ">
+                        detalle
+                    </p>
+
+                    <span className='text-xs xl:text-sm text-center text-nowrap'>importe</span>
+                    <button className='text-xs xl:text-sm flex justify-end'>Eliminar</button>
+
+
+
+
+                </li>
+            </ul>
+        </div>
+           {[...gastoFiltrado].reverse().map((gasto) => (gastoId == gasto.nombreGastoId? (<ListaGastosUno key={gasto.id} detalle={gasto.detalle? gasto.detalle : 'sin detalle'} importe={numeroConSeparacion(gasto.importe)} eliminar = {()=> eliminarGasto(gasto.id)} dia={gasto.dia} mes={gasto.mes} anio={gasto.anio} idGasto={gasto.id} bool={gasto.pagado} tipo='Gastos'/>): null))}
+           {[...ingresoFiltrado].reverse().map((ingreso) => (ingresoId == ingreso.nombreIngresoId? (<ListaGastosUno key={ingreso.id} detalle={ingreso.nombreIngreso } importe={numeroConSeparacion(ingreso.importe)} eliminar = {()=> eliminarIngreso(ingreso.id)} dia={ingreso.dia} mes={ingreso.mes} anio={ingreso.anio} idGasto={ingreso.id} bool={ingreso.cobrado} tipo='Ingresos'/>): null))}
         </div>
 
     )
