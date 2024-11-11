@@ -13,7 +13,7 @@ export default function Input({ name, value, onChange }) {
                 name={name} 
                 onChange={onChange} 
                 value={value} 
-                className=" border   text-sm rounded-lg  block w-full ps-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="5000.85"/>
+                className=" border   text-sm rounded-lg  block w-full ps-10 p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="50000"/>
             </div>
         </div>
     )

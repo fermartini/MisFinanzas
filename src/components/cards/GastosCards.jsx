@@ -13,10 +13,10 @@ export default function GastosCards({ icono, gasto, precio, eliminar }) {
 
                     <div className='flex flex-col   col-span-3 gap-3'>
                         <div className="flex justify-between">
-                        <span className='inline-flex animate-text-gradient bg-gradient-to-r from-[#b2a8fd] via-[#8678f9] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-xl text-transparent'>
-                            {gasto}
-                        </span>
-                        <button onClick={eliminar}><Delete /></button>
+                            <span className='inline-flex animate-text-gradient bg-gradient-to-r from-[#b2a8fd] via-[#8678f9] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-lg text-transparent truncate'>
+                                {gasto}
+                            </span>
+                            <button onClick={eliminar}><Delete /></button>
                         </div>
                         <span className='text-nowrap animate-background-shine bg-[linear-gradient(110deg,#939393,45%,#1e293b,55%,#939393)] bg-[length:250%_100%] bg-clip-text text-xl text-transparent'>
                             $ {precio}
@@ -27,7 +27,7 @@ export default function GastosCards({ icono, gasto, precio, eliminar }) {
                 </div>
             </div>
             <div className='mt-2 flex justify-end'>
-                
+
 
             </div>
         </>

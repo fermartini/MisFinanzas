@@ -21,21 +21,34 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './add.css'; // Importa tus estilos CSS para las animaciones
 import API_URL from '../../config.js';
 import Loading from './Loading.jsx'
-import {eliminarOk, notifyOk, notifyError, eliminarError, numeroConSeparacion} from '../funciones.jsx'
+import { eliminarOk, notifyOk, notifyError, eliminarError, numeroConSeparacion } from '../funciones.jsx'
 import Sesion from './Sesion.jsx'
 export default function Add() {
   const { user, gastos, ingresos, setGastos, setIngresos, nombreGastos, nombreIngresos, loading, authloading } = useAuth();
   const [idUser, setIdUser] = useState()
+  const [pagado, setPagado] = useState(1);
+  const [cobrado, setCobrado] = useState(1);
 
   const obtenerFechaActual = () => {
     const ahora = new Date();
     const dia = format(ahora, 'dd');
     const mes = format(ahora, 'MM');
     const anio = format(ahora, 'yyyy');
+
     return { dia, mes, anio };
   }
 
+  const cobrar = () => {
+    const newCobrado = cobrado === 1 ? 0 : 1
+    setCobrado(newCobrado)
+    setFormValues(prev => ({ ...prev, cobrado: newCobrado }))
+  }
 
+  const pagar = () => {
+    const newPagado = pagado === 1 ? 0 : 1
+    setPagado(newPagado)
+    setFormValues(prev => ({ ...prev, pagado: newPagado }))
+  }
   const [formValues, setFormValues] = useState({
     importe: '',
     dia: obtenerFechaActual().dia,
@@ -46,7 +59,10 @@ export default function Add() {
     TipoGastoId: 1,
     UsuarioId: null, // Inicialmente null
     NombreIngresoId: 1,
-    TipoIngresoId: 1
+    TipoIngresoId: 1,
+    cobrado: cobrado,
+    pagado: pagado
+
   });
   useEffect(() => {
     user ? setIdUser(user.id) : setIdUser(0)
@@ -79,7 +95,9 @@ export default function Add() {
     TipoGastoId: 1,
     UsuarioId: idUser,
     NombreIngresoId: 1,
-    TipoIngresoId: 1
+    TipoIngresoId: 1,
+    cobrado: cobrado,
+    pagado: pagado
   }
   const [toggleValue, setToggleValue] = useState(false);
   const handleToggle = () => {
@@ -241,7 +259,7 @@ export default function Add() {
   };
 
   if (!user) {
-    if(loading || authloading) {
+    if (loading || authloading) {
       return (
         <div className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden '>
           <div className='lg:col-span-1'></div>
@@ -251,7 +269,7 @@ export default function Add() {
               {!toggleValue ? (
                 <>
                   <h1 className='text-3xl text-center text-white pt-5'>AGREGAR GASTO</h1>
-    
+
                   <Select
                     name='NombreGastoId'
                     value={formValues.NombreGastoId}
@@ -268,7 +286,7 @@ export default function Add() {
                     <Fecha traerFecha={tomarDias} />
                   </div>
                   <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='EJ: 1kg de arroz, 2 paquetes de fideos, etc....' />
-    
+
                 </>
               ) : (
                 <>
@@ -288,12 +306,12 @@ export default function Add() {
                     />
                     <Fecha traerFecha={tomarDias} />
                   </div>
-                  <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='' disabled={true}/>
-    
+                  <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='' disabled={true} />
+
                 </>
               )}
               <FormBoton />
-    
+
               <ToastContainer position="top-right"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -304,18 +322,18 @@ export default function Add() {
                 draggable
                 pauseOnHover
                 theme="dark"
-    
+
               />
-    
+
             </form>
-    
-    
+
+
           </div>
           <div className="flex-col lg:flex-row col-span-2 h-screen gap-10 w-full px-10 hidden md:flex">
             <div className='flex flex-col justify-end h-fit w-full col-span-1 '>
-    
+
               <h2 className='text-white text-3xl text-center text-nowrap'>Últimos Gastos</h2>
-    
+
               {
                 loading || authloading ? (
                   <Loading />) :
@@ -323,9 +341,9 @@ export default function Add() {
                     <TransitionGroup>
                       {
                         gastos.slice(-5).reverse().map((e) => {
-    
+
                           return (
-    
+
                             <CSSTransition
                               key={e.id}
                               timeout={500}
@@ -343,12 +361,12 @@ export default function Add() {
                     </TransitionGroup>
                   )
               }
-    
+
             </div>
             <div className='flex flex-col h-fit w-full col-span-1'>
-    
+
               <h2 className='text-white text-3xl text-center text-nowrap'>Ultimos Ingresos</h2>
-    
+
               {
                 loading || authloading ? (
                   <Loading />) :
@@ -356,7 +374,7 @@ export default function Add() {
                     <TransitionGroup>
                       {
                         ingresos.slice(-5).reverse().map((e) => {
-    
+
                           return (
                             <CSSTransition key={e.id} timeout={500} classNames='fade'>
                               <GastosCards
@@ -379,10 +397,10 @@ export default function Add() {
         </div>
       )
     } else return (
-      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'><Sesion/> </div>)
-    }
-    
-  
+      <div className='h-screen w-screen flex flex-col justify-center items-center text-yellow-100 text-5xl'><Sesion /> </div>)
+  }
+
+
   return (
     <section className='lg:grid lg:grid-cols-6 min-h-screen gap-10 lg:mt-10 w-full justify-center overflow-x-hidden '>
       <div className='lg:col-span-1'></div>
@@ -408,6 +426,16 @@ export default function Add() {
                 />
                 <Fecha traerFecha={tomarDias} />
               </div>
+              <div className='flex gap-3 my-5'>
+              <input 
+                  type="checkbox" 
+                  name="pagado" 
+                  id="pagado" 
+                  onChange={pagar}  
+                  checked={pagado === 1}
+                />
+                <label htmlFor="" className='text-white text-lg'>Ya lo pague</label>
+              </div>
               <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='EJ: 1kg de arroz, 2 paquetes de fideos, etc....' />
 
             </>
@@ -429,7 +457,18 @@ export default function Add() {
                 />
                 <Fecha traerFecha={tomarDias} />
               </div>
-              <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='' disabled={true}/>
+              <div className='flex gap-3 my-5'>
+              <input 
+                  type="checkbox" 
+                  name="cobrado" 
+                  id="cobrado" 
+                  onChange={cobrar}  
+                  checked={cobrado === 1}
+                />
+                <label htmlFor="" className='text-white text-lg'>Ya lo cobre</label>
+              </div>
+
+              <Textarea name='detalle' value={formValues.detalle} onChange={cambioTexto} placeholder='' disabled={true} />
 
             </>
           )}
